@@ -2,44 +2,41 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
-func apiHandler(w http.ResponseWriter, req *http.Request) {
+func apiHandler(w http.ResponseWriter) {
 	fmt.Fprintf(w, "Hello, world!\n")
 }
 
-func healthCheckHandler(w http.ResponseWriter, req *http.Request) {
+func healthCheckHandler(w http.ResponseWriter) {
 	fmt.Fprintf(w, "ok\n")
-}
-
-func loggingMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Request received: %s %s", r.Method, r.URL.Path)
-		next.ServeHTTP(w, r)
-		log.Println("Request handled successfully")
-	})
-}
-
-func setupHandlers(mux *http.ServeMux) {
-	mux.Handle("/", loggingMiddleware(http.FileServer(http.Dir("static"))))
-	mux.Handle("/api", loggingMiddleware(http.HandlerFunc(apiHandler)))
-	mux.Handle("/healthz", loggingMiddleware(http.HandlerFunc(healthCheckHandler)))
 }
 
 func main() {
 	listenAddr := os.Getenv("HOST_ADDR")
-
 	if len(listenAddr) == 0 {
 		listenAddr = ":8080"
 	}
-
-	mux := http.NewServeMux()
-	fmt.Printf("Starting server on http://localhost%s\n", listenAddr)
-
-	setupHandlers(mux)
-
-	log.Fatal(http.ListenAndServe(listenAddr, mux))
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+	r.GET("/api", func(c *gin.Context) {
+		apiHandler(c.Writer)
+	})
+	r.GET("/healthz", func(c *gin.Context) {
+		healthCheckHandler(c.Writer)
+	})
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Welcome to the server!",
+		})
+	})
+	r.Run(listenAddr) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
