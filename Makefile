@@ -1,13 +1,26 @@
-.PHONY: all test lint build run
+.PHONY: all test vet fmt lint build run deps
 
-all: test lint build run
+all: test vet fmt lint build run deps
+
+deps:
+	@echo "Updating dependencies..."
+	@go mod tidy
 
 test:
-	go test -v -race -parallel=4 ./...
+	@echo "Running tests..."
+	@go test -v -race -parallel=4 ./...
+
+vet:
+	@echo "Running go vet..."
+	@go vet ./...
+
+fmt:
+	@echo "Formatting code..."
+	@go fmt ./...
 
 lint:
-	@echo "Running revive..."
-	@go list ./... | grep -v /vendor/ | xargs -L1 revive -formatter friendly -config revive.toml
+	@echo "Running linter..."
+	@revive -formatter friendly -config revive.toml ./...
 
 build:
 	@echo "Building server binary..."
