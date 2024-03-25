@@ -7,7 +7,7 @@ lint :
 	go list ./... | grep -v /vendor/ | xargs -L1 golint -set_exit_status
 
 build :
-	go build -o bin/api ./cmd/server
+	go build -o bin/server ./cmd/server
 
 run :
-	go run cmd/server/main.go
+	go run cmd/server/server.go

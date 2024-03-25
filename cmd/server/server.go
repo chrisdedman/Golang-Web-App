@@ -30,7 +30,8 @@ func setupHandlers(mux *http.ServeMux) {
 }
 
 func main() {
-	listenAddr := os.Getenv("LISTEN_ADDR")
+	listenAddr := os.Getenv("HOST_ADDR")
+
 	if len(listenAddr) == 0 {
 		listenAddr = ":8080"
 	}
