@@ -12,10 +12,6 @@ func apiHandler(w http.ResponseWriter) {
 	fmt.Fprintf(w, "Hello, world!\n")
 }
 
-func healthCheckHandler(w http.ResponseWriter) {
-	fmt.Fprintf(w, "ok\n")
-}
-
 func main() {
 	listenAddr := os.Getenv("HOST_ADDR")
 	if len(listenAddr) == 0 {
@@ -31,7 +27,9 @@ func main() {
 		apiHandler(c.Writer)
 	})
 	r.GET("/healthz", func(c *gin.Context) {
-		healthCheckHandler(c.Writer)
+		c.JSON(http.StatusOK, gin.H{
+			"status": "ok",
+		})
 	})
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
