@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+# ignore local environment variable file
+.env 
+
+# ingore built executables
+bin/ 
