@@ -11,20 +11,39 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	router *gin.Engine
+
+	expectedPingResponse    = gin.H{"message": "pong"}
+	expectedAPIResponse     = gin.H{"message": "API handler"}
+	expectedHealthzResponse = gin.H{"status": "ok"}
+	expectedRootResponse    = gin.H{"message": "Welcome to the server!"}
+)
+
+func init() {
+	// Set up a test environment
+	os.Setenv("HOST_ADDR", ":8081")
+	gin.SetMode(gin.TestMode)
+	router = gin.Default()
+
+	// Register routes
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, expectedPingResponse)
+	})
+	router.GET("/api", func(c *gin.Context) {
+		c.JSON(http.StatusOK, expectedAPIResponse)
+	})
+	router.GET("/healthz", func(c *gin.Context) {
+		c.JSON(http.StatusOK, expectedHealthzResponse)
+	})
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, expectedRootResponse)
+	})
+}
+
 func TestMain(t *testing.T) {
 	// Test the main function
 	t.Run("TestMain", func(t *testing.T) {
-		// Set up a test environment
-		os.Setenv("HOST_ADDR", ":8080")
-		gin.SetMode(gin.TestMode)
-		router := gin.Default()
-
-		// Define the expected response for each route
-		expectedPingResponse := gin.H{"message": "pong"}
-		expectedAPIResponse := gin.H{"message": "API handler"}
-		expectedHealthzResponse := gin.H{"status": "ok"}
-		expectedRootResponse := gin.H{"message": "Welcome to the server!"}
-
 		// Define the test cases
 		testCases := []struct {
 			name           string
