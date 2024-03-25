@@ -9,10 +9,17 @@ import (
 )
 
 func apiHandler(w http.ResponseWriter) {
-	fmt.Fprintf(w, "Hello, world!\n")
+	// apiHandler is an HTTP handler that writes a JSON response to the given ResponseWriter.
+	// The response contains a message "API handler".
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, `{"message": "API handler"}`)
 }
 
 func main() {
+	// main is the entry point of the server application.
+	// It initializes the server, sets up the routes, and starts listening for incoming requests.
+	// If the HOST_ADDR environment variable is not set, it defaults to ":8080".
 	listenAddr := os.Getenv("HOST_ADDR")
 	if len(listenAddr) == 0 {
 		listenAddr = ":8080"
