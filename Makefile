@@ -22,10 +22,12 @@ lint:
 	@echo "Running linter..."
 	@revive -formatter friendly -config revive.toml ./...
 
-build:
+build: deps
 	@echo "Building server binary..."
 	@go build -o bin/server ./cmd/server
+	@go build -o bin/database ./internal/database
 
 run: build
 	@echo "Running server..."
 	@./bin/server
+	@./bin/database
