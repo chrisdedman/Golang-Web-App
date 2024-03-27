@@ -25,6 +25,26 @@ make run
 3. Open your browser and navigate to `http://localhost:8080`
 4. You should see `{"message": "Welcome to the server!"}`
 
+## How to contribute
+1. Clone the repository by following the instructions in the ["How to run the server"](https://github.com/sandbox-science/deep-focus/blob/9737b4be342859fc19916b87371a73b08927f501/README.md#L15) section 
+2. Create a new branch ``git checkout -b choose-a-branch-name``
+3. Make your changes
+4. Commit your changes ``git commit -m "Your message"``
+5. Push your changes ``git push origin choose-a-branch-name``
+6. Create a pull request (from GitHub on the project page)
+
+Always make sure that your local main branch is up-to-date with the remote main branch. You can do this by running the following commands:
+```bash
+git checkout main
+git pull origin main
+```
+and to update your local branch with the latest changes from the main branch, go back to you own local branch by running:
+```bash
+git checkout choose-a-branch-name
+git merge main
+```
+
+
 ## Technologies
 - [Golang](https://golang.org/)
 - [Gin Web Framework](https://pkg.go.dev/github.com/gin-gonic/gin#section-readme)
