@@ -26,7 +26,7 @@ make run
 4. You should see `{"message": "Welcome to the server!"}`
 
 ## How to contribute
-1. Clone the repository by following the instructions in the ["How to run the server"](https://github.com/sandbox-science/deep-focus/blob/9737b4be342859fc19916b87371a73b08927f501/README.md#L15) section 
+1. Clone the repository by following the instructions in the ["How to run the server"](#how-to-run-the-server) section 
 2. Create a new branch ``git checkout -b choose-a-branch-name``
 3. Make your changes
 4. Commit your changes ``git commit -m "Your message"``
