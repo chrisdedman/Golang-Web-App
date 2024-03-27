@@ -44,7 +44,6 @@ git checkout choose-a-branch-name
 git merge main
 ```
 
-
 ## Technologies
 - [Golang](https://golang.org/)
 - [Gin Web Framework](https://pkg.go.dev/github.com/gin-gonic/gin#section-readme)
