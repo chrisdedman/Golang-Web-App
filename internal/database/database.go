@@ -20,8 +20,9 @@ func getEnvVar(key string) string {
 }
 
 func main() {
+	// main connects to the database, performs some operations, and then closes the connection.
 	databaseUrl := getEnvVar("DATABASE_URL")
-	fmt.Printf("DATABASE_URL: %s\n", databaseUrl)
+
 	if len(databaseUrl) == 0 {
 		fmt.Fprintf(os.Stderr, "DATABASE_URL environment variable not set\n")
 		os.Exit(1)
@@ -35,28 +36,33 @@ func main() {
 
 	fmt.Println("Connected!")
 
-	// test for create table and insert data
-	_, err = dbPool.Exec(context.Background(), "create table if not exists users(id serial primary key, username text, email text, password text, created_at timestamp, updated_at timestamp)")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating table: %v\n", err)
-		os.Exit(1)
-	}
+	/*
+	 * Exemple of how to use the database to create a table,
+	 *	insert data and retrieve data
 
-	_, err = dbPool.Exec(context.Background(), "insert into users(username, email, password, created_at, updated_at) values($1, $2, $3, $4, $5)", "Chris", "test@email.com", "1234", "2021-07-01", "2021-07-01")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error inserting data: %v\n", err)
-		os.Exit(1)
-	}
+	 *	// test for create table and insert data
+	 *	_, err = dbPool.Exec(context.Background(), "create table if not exists users(id serial primary key, username text, email text, password text, created_at timestamp, updated_at timestamp)")
+	 *	if err != nil {
+	 *		fmt.Fprintf(os.Stderr, "Error creating table: %v\n", err)
+	 *		os.Exit(1)
+	 *	}
 
-	// query database test
-	var name string
-	err = dbPool.QueryRow(context.Background(), "select username from users").Scan(&name)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
-	}
+	 *	_, err = dbPool.Exec(context.Background(), "insert into users(username, email, password, created_at, updated_at) values($1, $2, $3, $4, $5)", "Chris", "test@email.com", "1234", "2021-07-01", "2021-07-01")
+	 *	if err != nil {
+	 *		fmt.Fprintf(os.Stderr, "Error inserting data: %v\n", err)
+	 *		os.Exit(1)
+	 *	}
 
-	fmt.Println(name)
+	 *	// query database test
+	 *	var name string
+	 *	err = dbPool.QueryRow(context.Background(), "select username from users").Scan(&name)
+	 *	if err != nil {
+	 *		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+	 *		os.Exit(1)
+	 *	}
+
+	 *	fmt.Println(name)
+	 */
 
 	// close database
 	defer dbPool.Close()
