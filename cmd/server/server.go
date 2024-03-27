@@ -1,17 +1,28 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
+
+func getEnvVar(key string) string {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return os.Getenv(key)
+}
 
 func main() {
 	// main is the entry point of the server application.
 	// It initializes the server, sets up the routes, and starts listening for incoming requests.
 	// If the HOST_ADDR environment variable is not set, it defaults to ":8080".
-	listenAddr := os.Getenv("HOST_ADDR")
+	listenAddr := getEnvVar("HOST_ADDR")
 	if len(listenAddr) == 0 {
 		listenAddr = ":8080"
 	}
