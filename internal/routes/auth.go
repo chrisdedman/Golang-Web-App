@@ -7,6 +7,7 @@ import (
 	"github.com/sandbox-science/deep-focus/internal/controllers"
 )
 
+// AuthRoutes registers the authentication routes to the provided Gin router.
 func AuthRoutes(router *gin.Engine) {
 	router.POST("/login", controllers.Login)
 	router.POST("/signup", controllers.Signup)
