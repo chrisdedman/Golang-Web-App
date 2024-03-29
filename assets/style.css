@@ -17,7 +17,9 @@
 }
 
 #menu {
-  margin-left: 130px;
+  position: fixed;
+  right: 20px;
+  top: 5px;
 }
 
 .container {
