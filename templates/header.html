@@ -1,0 +1,21 @@
+{{define "header.html"}}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/assets/style.css">
+	<link rel="shortcut icon" type="image/png" href="/assets/favicon.png"/>
+	<script type="text/javascript" src="/assets/menu.js"></script>
+	<title>Deep Focus App</title>
+</head>
+<body>
+	<div class ="header">
+	  <div id="logo"><a href="/"><img src="/assets/header.png" height="80"/></a></div>
+	  <div id="menu">
+      <button class = "menubouton" onclick='setMenu("#")' >Login</button>
+      <button class = "menubouton" onclick='setMenu("#")' >Test</button>
+    </div>
+  </div>
+  <div class="container">
+{{end}}
