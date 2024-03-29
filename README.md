@@ -7,10 +7,15 @@ A simple deep focus web app that helps users stay focused on their work. With th
 - [PostgreSQL](https://www.postgresql.org/)
 - ``.env`` file with the following environment variables:
 ```text
-export HOST_ADDR    = ":3000"
-export DATABASE_URL = "postgres://[username]:[password]@localhost:[port]/[database_name]?sslmode=disable"
+export HOST_ADDR   = ":3000"
+export DB_HOST     = "localhost"
+export DB_PORT     = "PORT"
+export DB_USER     = "USERNAME"
+export DB_PASSWORD = "PASSWORD"
+export DB_NAME     = "DATABASE_NAME"
+export DB_SSLMODE  = "disable"
 ```
-Replace the placeholders [username], [password], [port], [port],[database_name] with your actual values.
+Replace the placeholders for the database [username], [password], [port],[database_name] with your actual values.
 
 ## How to run the server
 1. Clone the repository by running the following command:
