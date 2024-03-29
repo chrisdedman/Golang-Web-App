@@ -2,57 +2,46 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/sandbox-science/deep-focus/internal/database"
+	"github.com/sandbox-science/deep-focus/internal/routes"
 )
 
-func getEnvVar(key string) string {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	return os.Getenv(key)
-}
-
 func main() {
-	// main is the entry point of the server application.
-	// It initializes the server, sets up the routes, and starts listening for incoming requests.
-	// If the HOST_ADDR environment variable is not set, it defaults to ":8080".
-	listenAddr := getEnvVar("HOST_ADDR")
+	router := gin.Default()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	config := database.Config{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   os.Getenv("DB_NAME"),
+		SSLMode:  os.Getenv("DB_SSLMODE"),
+	}
+
+	listenAddr := os.Getenv("HOST_ADDR")
 	if len(listenAddr) == 0 {
 		listenAddr = ":8080"
 	}
 
-	router := gin.Default()
+	// Initialize the client IP address
 	router.ForwardedByClientIP = true
 	router.SetTrustedProxies([]string{"127.0.0.1"})
+
+	// Serve static files and templates
 	router.Static("assets", "./assets")
 	router.LoadHTMLGlob("templates/*.html")
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"content": "In development...",
-		})
-	})
+	database.InitDB(config)
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-	router.GET("/api", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "API handler",
-		})
-	})
-	router.GET("/healthz", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "ok",
-		})
-	})
-	router.Run(listenAddr) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	routes.AuthRoutes(router)
+	router.Run(listenAddr)
 }
