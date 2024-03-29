@@ -25,3 +25,6 @@ go.work
 
 # ingore built executables
 bin/ 
+
+# ignore .DS_Store files
+.DS_Store
