@@ -7,10 +7,15 @@ A simple deep focus web app that helps users stay focused on their work. With th
 - [PostgreSQL](https://www.postgresql.org/)
 - ``.env`` file with the following environment variables:
 ```text
-export HOST_ADDR    = ":3000"
-export DATABASE_URL = "postgres://[username]:[password]@localhost:[port]/[database_name]?sslmode=disable"
+export HOST_ADDR   = ":3000"
+export DB_HOST     = "localhost"
+export DB_PORT     = "PORT"
+export DB_USER     = "USERNAME"
+export DB_PASSWORD = "PASSWORD"
+export DB_NAME     = "DATABASE_NAME"
+export DB_SSLMODE  = "disable"
 ```
-Replace the placeholders [username], [password], [port], [port],[database_name] with your actual values.
+Replace the placeholders for the database [username], [password], [port],[database_name] with your actual values.
 
 ## How to run the server
 1. Clone the repository by running the following command:
@@ -22,8 +27,8 @@ cd deep-focus # Change directory to the project folder
 ```bash
 make run
 ```
-3. Open your browser and navigate to `http://localhost:8080`
-4. You should see `{"message": "Welcome to the server!"}`
+3. Open your browser and navigate to `http://localhost:8080` (or any other port you specified in the `.env` file)
+4. You should see the front page of the app
 
 ## How to contribute
 1. Clone the repository by following the instructions in the ["How to run the server"](#how-to-run-the-server) section 
