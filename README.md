@@ -27,8 +27,8 @@ cd deep-focus # Change directory to the project folder
 ```bash
 make run
 ```
-3. Open your browser and navigate to `http://localhost:8080`
-4. You should see `{"message": "Welcome to the server!"}`
+3. Open your browser and navigate to `http://localhost:8080` (or any other port you specified in the `.env` file)
+4. You should see the front page of the app
 
 ## How to contribute
 1. Clone the repository by following the instructions in the ["How to run the server"](#how-to-run-the-server) section 
