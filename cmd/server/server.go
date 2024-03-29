@@ -28,6 +28,8 @@ func main() {
 	}
 
 	router := gin.Default()
+	router.ForwardedByClientIP = true
+	router.SetTrustedProxies([]string{"127.0.0.1"})
 	router.Static("assets", "./assets")
 	router.LoadHTMLGlob("templates/*.html")
 
