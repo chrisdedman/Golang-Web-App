@@ -7,7 +7,7 @@ A simple deep focus web app that helps users stay focused on their work. With th
 - [PostgreSQL](https://www.postgresql.org/)
 - ``.env`` file with the following environment variables:
 ```text
-export HOST_ADDR    = ":4000"
+export HOST_ADDR    = ":3000"
 export DATABASE_URL = "postgres://[username]:[password]@localhost:[port]/[database_name]?sslmode=disable"
 ```
 Replace the placeholders [username], [password], [port], [port],[database_name] with your actual values.
