@@ -27,7 +27,7 @@ build: deps
 	@go build -o bin/server ./cmd/server
 	@go build -o bin/database ./internal/database
 
-run: build
+run: vet fmt build
 	@echo "Running server..."
 	@./bin/server
 	@./bin/database
