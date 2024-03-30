@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
 )
 
@@ -15,5 +15,5 @@ type User struct {
 
 type Claims struct {
 	Role string `json:"role"`
-	jwt.StandardClaims
+	jwt.Claims
 }

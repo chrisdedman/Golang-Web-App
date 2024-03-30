@@ -3,8 +3,8 @@ package controllers
 import (
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/sandbox-science/deep-focus/internal/database"
 	"github.com/sandbox-science/deep-focus/internal/utils"
 )
@@ -47,9 +47,9 @@ func Login(c *gin.Context) {
 
 	claims := &database.Claims{
 		Role: existingUser.Role,
-		StandardClaims: jwt.StandardClaims{
-			Subject:   existingUser.Email,
-			ExpiresAt: expirationTime.Unix(),
+		Claims: jwt.MapClaims{
+			"email": existingUser.Email,
+			"exp":   expirationTime.Unix(),
 		},
 	}
 
