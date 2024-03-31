@@ -15,13 +15,12 @@ import (
 
 // GenerateToken generates a JWT token for the provided user.
 func GenerateToken(user database.User) (string, error) {
-	// Parse token lifespan from environment variable
 	tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 	if err != nil {
 		return "", err
 	}
 
-	// Create token claims
+	// Set token claims
 	claims := jwt.MapClaims{
 		"auth": true,
 		"id":   user.ID,
