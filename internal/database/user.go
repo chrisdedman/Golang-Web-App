@@ -15,6 +15,7 @@ type User struct {
 	Email    string `gorm:"size:100;not null;unique" json:"email"`
 }
 
+// HashPassword hashes the user's password using bcrypt.
 func (user *User) HashPassword() error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
@@ -24,6 +25,8 @@ func (user *User) HashPassword() error {
 	user.Password = string(hashedPassword)
 
 	user.Username = html.EscapeString(strings.TrimSpace(user.Username))
+
+	user.Email = html.EscapeString(strings.TrimSpace(user.Email))
 
 	return nil
 }

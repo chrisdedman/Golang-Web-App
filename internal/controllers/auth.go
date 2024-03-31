@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -90,9 +91,13 @@ func (s *Server) Login(c *gin.Context) {
 		return
 	}
 
+	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
+
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
 func (s *Server) Logout(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"token": ""})
+	c.SetCookie("token", "", -1, "/", "localhost", false, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
+	fmt.Println("Logout successful")
 }
