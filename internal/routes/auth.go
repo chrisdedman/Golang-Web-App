@@ -5,10 +5,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sandbox-science/deep-focus/internal/controllers"
+	"github.com/sandbox-science/deep-focus/internal/middlewares"
 )
 
 // AuthRoutes registers the authentication routes to the provided Gin router.
 func AuthRoutes(router *gin.Engine) {
+	router.Use(middlewares.IsAuthorized())
+
 	router.POST("/login", controllers.Login)
 	router.GET("/login", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "login.html", gin.H{})
