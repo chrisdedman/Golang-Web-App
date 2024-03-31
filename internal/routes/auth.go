@@ -29,6 +29,9 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	})
 	authorized := route.Group("/api/admin")
 	authorized.Use(middleware.JwtAuthMiddleware())
+	authorized.GET("/app", func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "app.html", gin.H{})
+	})
 
 	authorized.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -45,7 +48,8 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			"status": "ok",
 		})
 	})
-
-	// Add a route for the logout endpoint
-	route.POST("/logout", server.Logout)
+	authorized.POST("/logout", server.Logout)
+	authorized.GET("/logout", func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "logout.html", gin.H{})
+	})
 }
