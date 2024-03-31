@@ -1,0 +1,123 @@
+{{define "signup.html"}}
+{{template "header.html"}}
+<div class="box">
+  <h1 class="title">Signup</h1>
+  <form id="signup-form">
+    <input
+      id="username"
+      type="text"
+      placeholder="Username"
+      required={true}
+    />
+    <input
+      type="text"
+      id="email"
+      name="email"
+      placeholder="Email"
+      required
+      pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Enter a valid email address."
+    >
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Password"
+      required
+    >
+    <input
+      type="password"
+      id="confirmPassword"
+      name="confirmPassword"
+      placeholder="Confirm Password"
+      required
+      oninput="validatePassword()"
+    >
+
+    <div class='text-sm'>
+      <br />
+      <span>Passwords Must:</span>
+      <ul>
+        <li>
+          <span className="icon-mark">
+            <span id="charLengthCheck"></span>
+            <span className="ml-2">Be at least 8 characters long</span>
+          </span>
+        </li>
+        <li>
+          <span className="icon-mark">
+            <span id="numberCheck"></span>
+            <span className="ml-2">Contain at least one number</span>
+          </span>
+        </li>
+        <li>
+          <span className="icon-mark">
+            <span id="upperCaseCheck"></span>
+            <span className="ml-2">Contain at least one uppercase letter</span>
+          </span>
+        </li>
+        <li>
+          <span className="icon-mark">
+            <span id="lowerCaseCheck"></span>
+            <span className="ml-2">Contain at least one lowercase letter</span>
+          </span>
+        </li>
+        <li>
+          <span className="icon-mark">
+            <span id="passwordMatchCheck" className="color: red;"></span>
+            <span className="ml-2">Password must match Confirm Password</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit">Sign Up</button>
+  </form>
+  <div id="message"></div>
+</div>
+<script>
+
+  document.getElementById('signup-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Check if password meets requirements
+    if (password.length < 8 || !/\d/.test(password) || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || password !== confirmPassword) {
+      document.getElementById('message').textContent = 'Password does not meet requirements.';
+      return;
+    }
+
+    // Get form data
+    const formData = {
+      username: document.getElementById('username').value,
+      email: document.getElementById('email').value,
+      password: password 
+    };
+
+    // Send POST request to backend
+    fetch('/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        const messageDiv = document.getElementById('message');
+        if (data.success) {
+          messageDiv.textContent = data.success;
+          window.location.href = '/login';
+        } else {
+          messageDiv.textContent = data.error;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+      });
+  });
+</script>
+{{template "footer.html"}}
+{{end}}
