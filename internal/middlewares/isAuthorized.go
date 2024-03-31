@@ -10,7 +10,6 @@ import (
 
 func JwtAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		err := utils.ValidateToken(c)
 
 		if err != nil {

@@ -53,7 +53,7 @@ func (s *Server) LoginCheck(email, password string) (string, error) {
 
 	user := database.User{}
 
-	if err = s.db.Model(database.User{}).Where("email=?", email).Take(&user).Error; err != nil {
+	if err = s.db.Model(database.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
 		return "", err
 	}
 
@@ -91,4 +91,8 @@ func (s *Server) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
+}
+
+func (s *Server) Logout(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"token": ""})
 }
