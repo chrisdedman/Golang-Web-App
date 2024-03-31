@@ -40,8 +40,8 @@ func main() {
 	router.Static("assets", "./assets")
 	router.LoadHTMLGlob("templates/*.html")
 
-	database.InitDB(config)
+	db, err := database.InitDB(config)
 
-	routes.AuthRoutes(router)
+	routes.AuthRoutes(router, db)
 	router.Run(listenAddr)
 }

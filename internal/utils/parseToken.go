@@ -1,27 +1,70 @@
 package utils
 
 import (
+	"errors"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sandbox-science/deep-focus/internal/database"
 )
 
 // ParseToken parses the given token string and returns the claims associated with it.
-// It uses the provided secret key to validate the token.
-// If the token is valid, it returns the claims; otherwise, it returns an error.
-func ParseToken(tokenString string) (claims *database.Claims, err error) {
-	token, err := jwt.ParseWithClaims(tokenString, &database.Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("my_secret_key"), nil
-	})
+func GenerateToken(user database.User) (string, error) {
+
+	tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	claims, ok := token.Claims.(*database.Claims)
+	claims := jwt.MapClaims{}
+	claims["authorized"] = true
+	claims["id"] = user.ID
+	claims["exp"] = time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix()
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	if !ok {
-		return nil, err
+	return token.SignedString([]byte(os.Getenv("API_SECRET")))
+
+}
+
+func ValidateToken(c *gin.Context) error {
+	token, err := GetToken(c)
+
+	if err != nil {
+		return err
 	}
 
-	return claims, nil
+	_, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		return nil
+	}
+
+	return errors.New("invalid token provided")
+}
+
+func GetToken(c *gin.Context) (*jwt.Token, error) {
+	tokenString := getTokenFromRequest(c)
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(os.Getenv("API_SECRET")), nil
+	})
+	return token, err
+}
+
+func getTokenFromRequest(c *gin.Context) string {
+	bearerToken := c.Request.Header.Get("Authorization")
+
+	splitToken := strings.Split(bearerToken, " ")
+	if len(splitToken) == 2 {
+		return splitToken[1]
+	}
+	return ""
 }

@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -16,24 +17,21 @@ type Config struct {
 	SSLMode  string
 }
 
-var DB *gorm.DB
-
 // InitDB initializes the database connection and performs necessary migrations.
-func InitDB(cfg Config) {
+func InitDB(cfg Config) (*gorm.DB, error) {
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		log.Fatal(err.Error())
 	}
-
-	if err := db.AutoMigrate(&User{}); err != nil {
-		panic(err)
+	if err = db.AutoMigrate(&User{}); err != nil {
+		log.Println(err)
 	}
 
 	fmt.Println("Migrated database")
 
-	DB = db
+	return db, err
 }
