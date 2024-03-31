@@ -23,9 +23,10 @@ func GenerateToken(user database.User) (string, error) {
 
 	// Create token claims
 	claims := jwt.MapClaims{
-		"authorized": true,
-		"id":         user.ID,
-		"exp":        time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix(),
+		"auth": true,
+		"id":   user.ID,
+		"exp":  time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix(),
+		"role": "user",
 	}
 
 	// Generate token
@@ -35,18 +36,19 @@ func GenerateToken(user database.User) (string, error) {
 		return "", err
 	}
 
+	// Log the generated token string for debugging
+	fmt.Println("Generated token:", tokenString)
+
 	return tokenString, nil
 }
 
 // ValidateToken validates the JWT token provided in the request headers.
 func ValidateToken(c *gin.Context) error {
-	// Extract token from request
 	token, err := GetToken(c)
+
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("Retrieved token:", token)
 
 	// Check if token is valid
 	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -56,29 +58,39 @@ func ValidateToken(c *gin.Context) error {
 	return errors.New("invalid token provided")
 }
 
-// GetToken extracts the JWT token from the request headers.
 func GetToken(c *gin.Context) (*jwt.Token, error) {
-	// Extract token from request headers
+	// Extract token from request header
 	tokenString := getTokenFromRequest(c)
-	fmt.Println("Retrieved token:", c.Request.Header)
 
-	// Check if token string is empty
 	if tokenString == "" {
 		return nil, errors.New("no token provided")
 	}
 
-	// Parse token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Check signing method
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		// Return secret key for validation
 		return []byte(os.Getenv("API_SECRET")), nil
 	})
+
+	if token.Valid {
+		fmt.Println("Token is valid", token)
+	} else {
+		fmt.Println("Token is invalid:  ", err)
+	}
+
 	if err != nil {
-		return nil, err
+		if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+				return nil, errors.New("token is malformed")
+			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
+				return nil, errors.New("token is expired or not yet valid")
+			} else {
+				return nil, fmt.Errorf("token validation error: %v", err)
+			}
+		}
+		return nil, fmt.Errorf("failed to parse token: %v", err)
 	}
 
 	return token, nil
@@ -86,22 +98,20 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 
 // getTokenFromRequest extracts the JWT token from the request headers.
 func getTokenFromRequest(c *gin.Context) string {
-	// Extract token from "Authorization" header
-	fmt.Println("--", c.Request.Header)
-
-	// Print raw request
-	rawRequest, _ := c.GetRawData()
-	fmt.Println("ROW", string(rawRequest))
-	authHeader := c.GetHeader("Authorization")
+	authHeader := c.Request.Header.Get("Cookie")
 	if authHeader == "" {
 		return ""
 	}
 
-	// Check if header starts with "Bearer "
-	parts := strings.Split(authHeader, " ")
-	if len(parts) == 2 && parts[0] == "Bearer" {
-		return parts[1]
+	cookieParts := strings.Split(authHeader, ";")
+	var token string
+	for _, part := range cookieParts {
+		part = strings.TrimSpace(part)
+		if strings.HasPrefix(part, "token=") {
+			token = strings.TrimPrefix(part, "token=")
+			break
+		}
 	}
 
-	return ""
+	return token
 }
