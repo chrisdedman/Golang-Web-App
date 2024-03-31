@@ -8,14 +8,12 @@
 </div>
 <script>
   document.getElementById('logoutButton').addEventListener('click', function() {
-    // Send a POST request to the logout endpoint
     fetch('/api/admin/logout', {
       method: 'POST',
-      credentials: 'same-origin' // Include cookies in the request
+      credentials: 'same-origin'
     })
     .then(response => {
       if (response.ok) {
-        // Redirect to the login page or do something else after successful logout
         window.location.href = '/login';
       } else {
         console.error('Logout failed:', response.statusText);
