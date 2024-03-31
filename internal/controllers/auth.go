@@ -14,10 +14,6 @@ import (
 var jwtKey = []byte("my_secret_key")
 
 // Login handles the login functionality.
-// It receives a JSON payload containing the user's email and password,
-// validates the credentials, generates a JWT token, and sets it as a cookie.
-// If the login is successful, it returns a JSON response with a success message.
-// If there are any errors during the login process, it returns a JSON response with an error message.
 func Login(c *gin.Context) {
 
 	var user database.User
@@ -67,14 +63,6 @@ func Login(c *gin.Context) {
 }
 
 // Signup handles the signup process for a user.
-// It binds the JSON data from the request body to the `user` variable.
-// If there is an error in binding the JSON data, it returns a JSON response with the error message.
-// It checks if a user with the same email already exists in the database.
-// If a user with the same email exists, it returns a JSON response with an error message.
-// It generates a password hash for the user's password using the `GenerateHashPassword` function from the `utils` package.
-// If there is an error in generating the password hash, it returns a JSON response with an error message.
-// It creates a new user record in the database using the `Create` method from the `models.DB` object.
-// Finally, it returns a JSON response with a success message indicating that the user has been created.
 func Signup(c *gin.Context) {
 	var user database.User
 
@@ -106,9 +94,6 @@ func Signup(c *gin.Context) {
 }
 
 // Logout is a handler function that logs out the user by clearing the token cookie.
-// It sets the token cookie value to an empty string and sets the expiration time to a negative value,
-// effectively deleting the cookie from the client's browser.
-// It then returns a JSON response indicating the success of the logout operation.
 func Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(200, gin.H{"success": "user logged out"})
