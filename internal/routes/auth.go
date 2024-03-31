@@ -18,6 +18,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			"content": "In development...",
 		})
 	})
+
 	route.POST("/login", server.Login)
 	router.GET("/login", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "login.html", gin.H{})
@@ -27,8 +28,10 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	router.GET("/signup", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "signup.html", gin.H{})
 	})
+
 	authorized := route.Group("/api/admin")
 	authorized.Use(middleware.JwtAuthMiddleware())
+
 	authorized.GET("/app", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "app.html", gin.H{})
 	})
@@ -48,6 +51,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			"status": "ok",
 		})
 	})
+
 	authorized.POST("/logout", server.Logout)
 	authorized.GET("/logout", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "logout.html", gin.H{})

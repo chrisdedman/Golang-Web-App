@@ -26,10 +26,12 @@ type Server struct {
 	db *gorm.DB
 }
 
+// NewServer creates a new server
 func NewServer(db *gorm.DB) *Server {
 	return &Server{db: db}
 }
 
+// Register creates a new user
 func (s *Server) Register(c *gin.Context) {
 	var input RegisterInput
 
@@ -49,6 +51,7 @@ func (s *Server) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "User created"})
 }
 
+// LoginCheck checks if the user exists in the database
 func (s *Server) LoginCheck(email, password string) (string, error) {
 	var err error
 
@@ -74,6 +77,7 @@ func (s *Server) LoginCheck(email, password string) (string, error) {
 
 }
 
+// Login logs in the user
 func (s *Server) Login(c *gin.Context) {
 	var input LoginInput
 
@@ -96,6 +100,7 @@ func (s *Server) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
+// Logout logs out the user
 func (s *Server) Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
