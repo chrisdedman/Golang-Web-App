@@ -1,0 +1,58 @@
+{{define "login.html"}}
+{{template "header.html"}}
+<div class="box">
+  <h1 class="title">Log In</h1>
+  <form id="login-form">
+    <input
+      id="email"
+      type="text"
+      placeholder="Email"
+      required
+      pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+      title="Enter a valid email address."
+    >
+    <input
+      type="password"
+      placeholder="Password"
+      id="password" 
+      name="password"
+      required=
+    >
+    <button type="submit">Log In</button>
+  </form>
+  <div id="message"></div>
+</div>
+<script>
+  document.getElementById('login-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    const formData = {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    };
+
+    // Send POST request to backend
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        const messageDiv = document.getElementById('message');
+        if (data.success) {
+          window.location.href = '/';
+        } else {
+          messageDiv.textContent = data.error;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+      });
+  });
+</script>
+{{template "footer.html"}}
+{{end}}
