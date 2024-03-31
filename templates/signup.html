@@ -103,14 +103,16 @@
     fetch('/signup', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')  
       },
       body: JSON.stringify(formData)
     })
       .then(response => response.json())
       .then(data => {
         const messageDiv = document.getElementById('message');
-        if (data.success) {
+        if (data.token) {
           messageDiv.textContent = data.success;
           window.location.href = '/login';
         } else {

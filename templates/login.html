@@ -31,19 +31,30 @@
       password: document.getElementById('password').value
     };
 
+    const token = localStorage.getItem('token');
+
     // Send POST request to backend
     fetch('/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+        'Access-Control-Expose-Headers': 'Authorization',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Credentials': 'true',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(formData)
     })
       .then(response => response.json())
       .then(data => {
         const messageDiv = document.getElementById('message');
-        if (data.success) {
-          window.location.href = '/';
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+
+          window.location.href = '/api/admin/app';
         } else {
           messageDiv.textContent = data.error;
         }

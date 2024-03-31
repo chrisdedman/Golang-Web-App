@@ -15,8 +15,13 @@
 	<div class="header">
 		<div id="logo"><a href="/"><img src="/assets/header.png" height="80" /></a></div>
 		<div id="menu">
+			<!-- TODO:
+							Find a way to show login and signup button when user isn't authenticate
+							and show logout and app button when user is authenticated
+			-->
 			<button class="menubouton" onclick='setmenu("/login")'>Login</button>
 			<button class="menubouton" onclick='setmenu("/signup")'>Sign Up</button>
+			<button class="menubouton" onclick='setmenu("/api/admin/app")'>App</button>
 			<!-- <button class="menubouton" onclick='setmenu("/logout")'>Log Out</button> -->
 		</div>
 	</div>

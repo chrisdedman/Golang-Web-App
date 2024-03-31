@@ -1,100 +1,103 @@
 package controllers
 
 import (
-	"time"
+	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/sandbox-science/deep-focus/internal/database"
 	"github.com/sandbox-science/deep-focus/internal/utils"
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
-// The string "my_secret_key" is just an example and should be replaced with
-// a secret key of sufficient length and complexity in a real-world scenario.
-var jwtKey = []byte("my_secret_key")
+type RegisterInput struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+}
 
-// Login handles the login functionality.
-func Login(c *gin.Context) {
+type LoginInput struct {
+	Password string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+}
 
-	var user database.User
+type Server struct {
+	db *gorm.DB
+}
 
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+func NewServer(db *gorm.DB) *Server {
+	return &Server{db: db}
+}
+
+func (s *Server) Register(c *gin.Context) {
+	var input RegisterInput
+
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var existingUser database.User
+	user := database.User{Username: input.Username, Password: input.Password, Email: input.Email}
+	user.HashPassword()
 
-	database.DB.Where("email = ?", user.Email).First(&existingUser)
-
-	if existingUser.ID == 0 {
-		c.JSON(400, gin.H{"error": "user does not exist"})
+	if err := s.db.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	errHash := utils.CompareHashPassword(user.Password, existingUser.Password)
+	c.JSON(http.StatusCreated, gin.H{"message": "User created"})
+}
 
-	if !errHash {
-		c.JSON(400, gin.H{"error": "invalid password"})
-		return
+func (s *Server) LoginCheck(email, password string) (string, error) {
+	var err error
+
+	user := database.User{}
+
+	if err = s.db.Model(database.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
+		return "", err
 	}
 
-	expirationTime := time.Now().Add(5 * time.Minute)
+	err = utils.VerifyPassword(password, user.Password)
 
-	claims := &database.Claims{
-		Role: existingUser.Role,
-		Claims: jwt.MapClaims{
-			"email": existingUser.Email,
-			"exp":   expirationTime.Unix(),
-		},
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		return "", err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	tokenString, err := token.SignedString(jwtKey)
+	token, err := utils.GenerateToken(user)
 
 	if err != nil {
-		c.JSON(500, gin.H{"error": "could not generate token"})
-		return
+		return "", err
 	}
 
-	c.SetCookie("token", tokenString, int(expirationTime.Unix()), "/", "localhost", false, true)
-	c.JSON(200, gin.H{"success": "user logged in"})
+	return token, nil
+
 }
 
-// Signup handles the signup process for a user.
-func Signup(c *gin.Context) {
-	var user database.User
+func (s *Server) Login(c *gin.Context) {
+	var input LoginInput
 
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var existingUser database.User
+	user := database.User{Email: input.Email, Password: input.Password}
 
-	database.DB.Where("email = ?", user.Email).First(&existingUser)
+	token, err := s.LoginCheck(user.Email, user.Password)
 
-	if existingUser.ID != 0 {
-		c.JSON(400, gin.H{"error": "user already exists"})
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The email or password is not correct"})
 		return
 	}
 
-	var errHash error
-	user.Password, errHash = utils.GenerateHashPassword(user.Password)
+	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
 
-	if errHash != nil {
-		c.JSON(500, gin.H{"error": "could not generate password hash"})
-		return
-	}
-
-	database.DB.Create(&user)
-
-	c.JSON(200, gin.H{"success": "user created"})
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-// Logout is a handler function that logs out the user by clearing the token cookie.
-func Logout(c *gin.Context) {
+func (s *Server) Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
-	c.JSON(200, gin.H{"success": "user logged out"})
+	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
+	fmt.Println("Logout successful")
 }

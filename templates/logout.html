@@ -1,0 +1,30 @@
+{{define "logout.html"}}
+{{template "header.html"}}
+<div class="box">
+  <h1 class="title">Log Out</h1>
+  <p>Are you sure you want to log out?</p>
+  <button id="logoutButton">Log Out</button>
+  <div id="message"></div>
+</div>
+<script>
+  document.getElementById('logoutButton').addEventListener('click', function() {
+    fetch('/api/admin/logout', {
+      method: 'POST',
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = '/login';
+      } else {
+        console.error('Logout failed:', response.statusText);
+        document.getElementById('message').textContent = 'Logout failed. Please try again.';
+      }
+    })
+    .catch(error => {
+      console.error('Error logging out:', error);
+      document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+    });
+  });
+</script>
+{{template "footer.html"}}
+{{end}}
