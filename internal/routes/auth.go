@@ -33,6 +33,12 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		ctx.HTML(http.StatusOK, "signup.html", gin.H{})
 	})
 
+	route.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "ok",
+		})
+	})
+
 	/*
 		Authorized routes. Protected by JWT middleware.
 		The following routes are only accesible by authenticated users.
@@ -47,11 +53,6 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	authorized.GET("/api", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "API handler",
-		})
-	})
-	authorized.GET("/healthz", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "ok",
 		})
 	})
 
