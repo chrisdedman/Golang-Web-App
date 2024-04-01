@@ -1,6 +1,13 @@
-# Golang Web App
+# Golang Template Web Application
 A simple web application built with Golang and PostgreSQL. The application is a simple CRUD application that allows users to create, read, update, and delete users from a PostgreSQL database.
 A simple frontend is also included in the project to demonstrate the functionality of the application.
+
+## Project Guide
+This is a guide for the Golang template CRUD web application project. You will find different guidelines to help you set up the project, and the database, and how to use Git and GitHub. You can find the wiki [here](https://github.com/chrisdedman/Golang-Web-App/wiki).
+
+### Table of Content
+1. [How to set up and use PostgreSQL](https://github.com/chrisdedman/Golang-Web-App/wiki/PostgresSQL-Setup-Guide)
+2. [How to use Git and GitHub](https://github.com/chrisdedman/Golang-Web-App/wiki/Git-&-GitHub-Guide)
 
 ## What's needed to run the server
 - [Golang](https://golang.org/)
