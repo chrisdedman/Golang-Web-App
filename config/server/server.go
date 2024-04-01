@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/sandbox-science/deep-focus/internal/database"
+	"github.com/sandbox-science/deep-focus/config/database"
 	"github.com/sandbox-science/deep-focus/internal/routes"
 )
 
