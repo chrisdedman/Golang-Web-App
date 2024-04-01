@@ -47,3 +47,10 @@ make run
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Demo
+
+![Golang Web App Homepage](/assets/homepage.png)
+![Golang Web App Login Page](/assets/login.png)
+![Golang Web App Register Page](/assets/register.png)
+![Golang Web App Dashboard Page](/assets/dashboard.png)
