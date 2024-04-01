@@ -54,7 +54,7 @@
         if (data.token) {
           localStorage.setItem('token', data.token);
 
-          window.location.href = '/api/admin/app';
+          window.location.href = '/user/dashboard';
         } else {
           messageDiv.textContent = data.error;
         }

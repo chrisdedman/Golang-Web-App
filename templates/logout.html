@@ -8,7 +8,7 @@
 </div>
 <script>
   document.getElementById('logoutButton').addEventListener('click', function() {
-    fetch('/api/admin/logout', {
+    fetch('/user/logout', {
       method: 'POST',
       credentials: 'same-origin'
     })
