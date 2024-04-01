@@ -1,7 +1,14 @@
+/* General Style */
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.title {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+/* Header Style */
 .header {
   position: fixed;
   left: 0;
@@ -26,6 +33,7 @@ body {
   top: 5px;
 }
 
+/* Footer Style */
 #footer {
   position: fixed;
   left: 0;
@@ -33,35 +41,67 @@ body {
   width: 100%;
   box-sizing: border-box;
   height: 50px;
-  /* Height of the footer */
   background: #888;
   color: white;
   padding: 10px 0 0 100px;
   font-size: 14px;
 }
 
-#footer a {
-  color: white;
+/* Button Styles */
+button {
+  border-radius: 0px;
+  background-color: black;
+  transition: all 0.4s ease;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
-#resultat {
-  margin: 10px;
-}
-
-#describe {
-  margin: 10px;
-}
-
-button.menubouton {
+button.menu {
   margin: 15px;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: rgb(183, 181, 178);
+  background-color: #000;
   color: white;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+button.menu:hover {
+  background-color: white;
+  color: black;
+}
+
+button.logout {
+  margin: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #000;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+button.logout:hover {
+  background-color: rgb(202, 98, 98);
+  color: black;
+}
+
+button[type=submit] {
+  margin-top: 20px;
+  background-color: rgb(49, 47, 47);
+  color: white;
+  width: 150px;
+  height: 30px;
   font-size: 16px;
   font-weight: bold;
 }
 
+button[type=submit]:hover {
+  background-color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+/* Container Style */
 .container {
   padding-top: 15px;
   margin-top: 40px;
@@ -84,6 +124,7 @@ button.menubouton {
   border-radius: 3rem;
 }
 
+/* Form Style */
 form {
   width: 30%;
   max-width: 400px;
@@ -105,30 +146,4 @@ input {
   border-radius: 5px;
   border: 1px solid hsl(0, 0%, 60%);
   margin-bottom: 5px;
-}
-
-button[type=submit] {
-  margin-top: 20px;
-  background-color: rgb(49, 47, 47);
-  color: white;
-  width: 150px;
-  height: 30px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-button[type=submit]:hover {
-  background-color: rgb(0, 0, 0);
-  cursor: pointer;
-}
-
-#message {
-  margin-top: 20px;
-  color: red;
-  font-weight: bold;
-}
-
-.title {
-  font-size: 40px;
-  font-weight: bold;
 }
