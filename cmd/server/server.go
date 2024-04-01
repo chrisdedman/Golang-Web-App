@@ -11,13 +11,16 @@ import (
 )
 
 func main() {
+	// Initialize the Gin router
 	router := gin.Default()
 
+	// Load the environment variables
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
+	// Initialize the database configuration
 	config := database.Config{
 		Host:     os.Getenv("DB_HOST"),
 		Port:     os.Getenv("DB_PORT"),
@@ -27,6 +30,7 @@ func main() {
 		SSLMode:  os.Getenv("DB_SSLMODE"),
 	}
 
+	// Set the listen address
 	listenAddr := os.Getenv("HOST_ADDR")
 	if len(listenAddr) == 0 {
 		listenAddr = ":8080"
@@ -40,8 +44,13 @@ func main() {
 	router.Static("assets", "./assets")
 	router.LoadHTMLGlob("templates/*.html")
 
+	// Initialize the database
 	db, err := database.InitDB(config)
+	if err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
 
+	// Initialize the routes and run the server
 	routes.AuthRoutes(router, db)
 	router.Run(listenAddr)
 }

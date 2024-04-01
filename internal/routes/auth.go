@@ -11,24 +11,32 @@ import (
 
 // AuthRoutes registers the authentication routes to the provided Gin router.
 func AuthRoutes(router *gin.Engine, db *gorm.DB) {
+	// Create a new server instance
 	server := controllers.NewServer(db)
+
+	/*
+		Register the authentication routes. Not protected by JWT middleware.
+		The following routes are accesible by anyone.
+	*/
 	route := router.Group("/")
 	route.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"content": "In development...",
-		})
+		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
 	route.POST("/login", server.Login)
-	router.GET("/login", func(ctx *gin.Context) {
+	route.GET("/login", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "login.html", gin.H{})
 	})
 
 	route.POST("/signup", server.Register)
-	router.GET("/signup", func(ctx *gin.Context) {
+	route.GET("/signup", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "signup.html", gin.H{})
 	})
 
+	/*
+		Authorized routes. Protected by JWT middleware.
+		The following routes are only accesible by authenticated users.
+	*/
 	authorized := route.Group("/api/admin")
 	authorized.Use(middleware.JwtAuthMiddleware())
 
@@ -52,6 +60,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		})
 	})
 
+	// Protected logout route
 	authorized.POST("/logout", server.Logout)
 	authorized.GET("/logout", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "logout.html", gin.H{})

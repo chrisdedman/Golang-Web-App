@@ -22,10 +22,9 @@ func (user *User) HashPassword() error {
 	if err != nil {
 		return err
 	}
+
 	user.Password = string(hashedPassword)
-
 	user.Username = html.EscapeString(strings.TrimSpace(user.Username))
-
 	user.Email = html.EscapeString(strings.TrimSpace(user.Email))
 
 	return nil

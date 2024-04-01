@@ -31,7 +31,7 @@ func NewServer(db *gorm.DB) *Server {
 	return &Server{db: db}
 }
 
-// Register creates a new user
+// Register creates a new user and add it to the database.
 func (s *Server) Register(c *gin.Context) {
 	var input RegisterInput
 
@@ -51,7 +51,7 @@ func (s *Server) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "User created"})
 }
 
-// LoginCheck checks if the user exists in the database
+// LoginCheck checks if the user exists in the database.
 func (s *Server) LoginCheck(email, password string) (string, error) {
 	var err error
 
@@ -77,7 +77,7 @@ func (s *Server) LoginCheck(email, password string) (string, error) {
 
 }
 
-// Login logs in the user
+// Login logs in the user and returns a JWT token.
 func (s *Server) Login(c *gin.Context) {
 	var input LoginInput
 
@@ -87,7 +87,6 @@ func (s *Server) Login(c *gin.Context) {
 	}
 
 	user := database.User{Email: input.Email, Password: input.Password}
-
 	token, err := s.LoginCheck(user.Email, user.Password)
 
 	if err != nil {
@@ -96,11 +95,10 @@ func (s *Server) Login(c *gin.Context) {
 	}
 
 	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
-
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-// Logout logs out the user
+// Logout logs out the user, and deletes the JWT token.
 func (s *Server) Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})

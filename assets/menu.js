@@ -1,8 +1,17 @@
+/* 
+  setmenu() function is used to redirect 
+  the user to the selected menu option from the frontend.
+*/
 function setmenu(option) {
   var host             = window.location.origin;
   window.location.href = host + option;
 }
 
+/*
+  Validate password. Check for at least 8 characters, 
+  one number, one uppercase letter, one lowercase letter, 
+  and that the password matches the confirm password.
+*/
 function validatePassword() {
   const password           = document.getElementById('password').value;
   const confirmPassword    = document.getElementById('confirmPassword').value;
