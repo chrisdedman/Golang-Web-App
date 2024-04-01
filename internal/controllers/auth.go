@@ -49,6 +49,7 @@ func (s *Server) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User created"})
+	fmt.Println("User created")
 }
 
 // LoginCheck checks if the user exists in the database.
@@ -74,7 +75,6 @@ func (s *Server) LoginCheck(email, password string) (string, error) {
 	}
 
 	return token, nil
-
 }
 
 // Login logs in the user and returns a JWT token.
@@ -96,6 +96,7 @@ func (s *Server) Login(c *gin.Context) {
 
 	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"token": token})
+	fmt.Println("Login successful")
 }
 
 // Logout logs out the user, and deletes the JWT token.
