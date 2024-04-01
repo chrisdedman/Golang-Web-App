@@ -109,20 +109,22 @@
       },
       body: JSON.stringify(formData)
     })
-      .then(response => response.json())
-      .then(data => {
-        const messageDiv = document.getElementById('message');
-        if (data.token) {
-          messageDiv.textContent = data.success;
-          window.location.href = '/login';
-        } else {
-          messageDiv.textContent = data.error;
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('message').textContent = 'An error occurred. Please try again later.';
-      });
+    .then(response => {
+      if (response.ok) {
+        window.location.href = '/login';
+      } else {
+        throw new Error('Registration failed');
+      }
+    })
+    .then(data => {
+      const messageDiv = document.getElementById('message');
+      console.log(data.message);
+      messageDiv.textContent = data.message;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+    });
   });
 </script>
 {{template "footer.html"}}
