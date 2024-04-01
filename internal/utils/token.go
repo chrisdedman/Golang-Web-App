@@ -71,7 +71,7 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 	})
 
 	if token.Valid {
-		fmt.Println("Token is valid:", token)
+		fmt.Println("Token is valid:", token.Valid)
 	} else {
 		fmt.Println("Error: Token is invalid:", err)
 	}
