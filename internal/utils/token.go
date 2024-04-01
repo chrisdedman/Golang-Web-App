@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v4" // Import v4 of the JWT library
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/sandbox-science/deep-focus/internal/database"
 )
 
@@ -34,9 +34,6 @@ func GenerateToken(user database.User) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	// Log the generated token string for debugging
-	fmt.Println("Generated token:", tokenString)
 
 	return tokenString, nil
 }
@@ -74,9 +71,9 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 	})
 
 	if token.Valid {
-		fmt.Println("Token is valid", token)
+		fmt.Println("Token is valid:", token)
 	} else {
-		fmt.Println("Token is invalid:  ", err)
+		fmt.Println("Error: Token is invalid:", err)
 	}
 
 	if err != nil {
