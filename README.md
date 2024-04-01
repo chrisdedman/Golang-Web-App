@@ -15,6 +15,8 @@ export DB_USER     = "USERNAME"
 export DB_PASSWORD = "PASSWORD"
 export DB_NAME     = "DATABASE_NAME"
 export DB_SSLMODE  = "disable"
+export API_SECRET  = add your jwt api secret
+export TOKEN_HOUR_LIFESPAN = add your token lifespan in hours
 ```
 Replace the placeholders for the database connection with your own values.
 
