@@ -38,7 +38,7 @@ func main() {
 
 	// Initialize the client IP address
 	router.ForwardedByClientIP = true
-	router.SetTrustedProxies([]string{"127.0.0.1"})
+	router.SetTrustedProxies([]string{"localhost"})
 
 	// Serve static files and templates
 	router.Static("assets", "./assets")
