@@ -13,19 +13,12 @@ This is a guide for the Golang template CRUD web application project. You will f
 - [Golang](https://golang.org/)
 - [Make](https://www.gnu.org/software/make/)
 - [PostgreSQL](https://www.postgresql.org/)
-- ``.env`` file with the following environment variables:
-```text
-export HOST_ADDR   = ":3000"
-export DB_HOST     = "localhost"
-export DB_PORT     = "PORT"
-export DB_USER     = "USERNAME"
-export DB_PASSWORD = "PASSWORD"
-export DB_NAME     = "DATABASE_NAME"
-export DB_SSLMODE  = "disable"
-export API_SECRET  = add your jwt api secret
-export TOKEN_HOUR_LIFESPAN = add your token lifespan in hours
-```
-Replace the placeholders for the database connection with your own values.
+- ``.env`` file
+
+In the root directory, create a new file named ``.env``.<br>
+Copy the content of ``.env.example`` into your ``.env`` file.
+
+Replace the placeholders for the database connection with your own values (read the [PostgreSQL setup guide](#table-of-content) for more information).
 
 ## How to run the server
 1. Clone the repository by running the following command:
@@ -33,7 +26,7 @@ Replace the placeholders for the database connection with your own values.
 git clone https://github.com/chrisdedman/Golang-Web-App.git
 cd Golang-Web-App # Change directory to the project folder
 ```
-2. Run the following command to start the server:
+2. Run the following command to start the server (need make installed):
 ```bash
 make run
 ```
@@ -42,8 +35,10 @@ make run
 
 ## Technologies
 - [Golang](https://golang.org/)
+- [GORM](https://gorm.io/)
 - [Gin Web Framework](https://pkg.go.dev/github.com/gin-gonic/gin#section-readme)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Make](https://www.gnu.org/software/make/)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
