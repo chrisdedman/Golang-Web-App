@@ -2,8 +2,32 @@
 <h1 class="title">
   Golang Web App Template Dashboard
 </h1>
-<button class="logout" onclick='setmenu("/user/logout")'>Log Out</button>
+<button class="warning" id="delete-btn">Delete User</button>
+<button class="warning" onclick='setmenu("/user/logout")'>Log Out</button>
 <p>
   This is the main app. This is a protected route. You can only access this page if you are logged in.
 </p>
+
+<script>
+  document.getElementById('delete-btn').addEventListener('click', function () {
+    if (confirm('Are you sure you want to delete your account?')) {
+      fetch('/user/delete/{{.userID}}', {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('User deleted successfully.');
+            window.location.href = '/user/logout';
+          } else {
+            alert('Error deleting user.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error deleting user.');
+        });
+    }
+  });
+</script>
 {{template "footer.html"}}
