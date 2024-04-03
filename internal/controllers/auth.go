@@ -105,3 +105,19 @@ func (s *Server) Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
 	fmt.Println("Logout successful")
 }
+
+// DeleteUser deletes a user from the database using the provided ID.
+func (s *Server) DeleteUser(c *gin.Context) {
+	user_id := c.Param("user_id")
+	fmt.Println(user_id)
+
+	var user database.User
+	if err := s.db.Where("id = ?", user_id).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	s.db.Delete(&user)
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
+	fmt.Println("User deleted")
+}
