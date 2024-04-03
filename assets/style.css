@@ -71,7 +71,7 @@ button.menu:hover {
   color: black;
 }
 
-button.logout {
+button.warning {
   margin: 15px;
   padding-left: 10px;
   padding-right: 10px;
@@ -81,7 +81,7 @@ button.logout {
   border-radius: 5px;
 }
 
-button.logout:hover {
+button.warning:hover {
   background-color: rgb(202, 98, 98);
   color: black;
 }
