@@ -43,11 +43,14 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		Authorized routes. Protected by JWT middleware.
 		The following routes are only accesible by authenticated users.
 	*/
-	authorized := route.Group("/user")
+	authorized := route.Group(("/user"))
 	authorized.Use(middleware.JwtAuthMiddleware())
 
 	authorized.GET("/dashboard", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "dashboard.html", gin.H{})
+		// Pass user ID to the template
+		ctx.HTML(http.StatusOK, "dashboard.html", gin.H{
+			// "userID": userID,
+		})
 	})
 
 	authorized.GET("/api", func(c *gin.Context) {
@@ -55,6 +58,8 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			"message": "API handler",
 		})
 	})
+
+	authorized.DELETE("/delete/:id", server.DeleteUser)
 
 	// Protected logout route
 	authorized.POST("/logout", server.Logout)
