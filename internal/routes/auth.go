@@ -19,25 +19,27 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		The following routes are accesible by anyone.
 	*/
 	route := router.Group("/")
-	route.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{})
-	})
-
-	route.POST("/login", server.Login)
-	route.GET("/login", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "login.html", gin.H{})
-	})
-
-	route.POST("/signup", server.Register)
-	route.GET("/signup", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "signup.html", gin.H{})
-	})
-
-	route.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "ok",
+	{
+		route.GET("/", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "index.html", gin.H{})
 		})
-	})
+
+		route.POST("/login", server.Login)
+		route.GET("/login", func(ctx *gin.Context) {
+			ctx.HTML(http.StatusOK, "login.html", gin.H{})
+		})
+
+		route.POST("/signup", server.Register)
+		route.GET("/signup", func(ctx *gin.Context) {
+			ctx.HTML(http.StatusOK, "signup.html", gin.H{})
+		})
+
+		route.GET("/health", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"status": "ok",
+			})
+		})
+	}
 
 	/*
 		Authorized routes. Protected by JWT middleware.
@@ -45,30 +47,31 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	*/
 	authorized := route.Group(("/user"))
 	authorized.Use(middleware.JwtAuthMiddleware())
-
-	// TO-DO: Add user ID to the context for user deletion
-	authorized.GET("/dashboard", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "dashboard.html", gin.H{
-			// "userID": userID,
+	{
+		// TO-DO: Add user ID to the context for user deletion
+		authorized.GET("/dashboard", func(ctx *gin.Context) {
+			ctx.HTML(http.StatusOK, "dashboard.html", gin.H{
+				// "userID": userID,
+			})
 		})
-	})
 
-	authorized.GET("/api", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "API handler",
+		authorized.GET("/api", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "API handler",
+			})
 		})
-	})
 
-	authorized.DELETE("/delete/:id", server.DeleteUser)
+		authorized.DELETE("/delete/:id", server.DeleteUser)
 
-	// Protected logout route
-	authorized.POST("/logout", server.Logout)
-	authorized.GET("/logout", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "logout.html", gin.H{})
-	})
+		// Protected logout route
+		authorized.POST("/logout", server.Logout)
+		authorized.GET("/logout", func(ctx *gin.Context) {
+			ctx.HTML(http.StatusOK, "logout.html", gin.H{})
+		})
 
-	// Wildcard route for default HTML layout
-	router.NoRoute(func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "noFound.html", gin.H{})
-	})
+		// Wildcard route for default HTML layout
+		router.NoRoute(func(c *gin.Context) {
+			c.HTML(http.StatusNotFound, "noFound.html", gin.H{})
+		})
+	}
 }
