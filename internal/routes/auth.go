@@ -49,10 +49,9 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	authorized := route.Group(("/user"))
 	authorized.Use(middleware.JwtAuthMiddleware())
 	{
-		// TO-DO: Add user ID to the context for user deletion
 		authorized.GET("/dashboard", func(ctx *gin.Context) {
-			userMap := ctx.MustGet("user").(jwt.MapClaims)
-			userID := userMap["id"].(float64)
+			user := ctx.MustGet("user").(jwt.MapClaims)
+			userID := user["id"].(float64)
 
 			ctx.HTML(http.StatusOK, "dashboard.html", gin.H{
 				"userID": userID,
