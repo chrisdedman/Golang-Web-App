@@ -61,7 +61,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			})
 		})
 
-		authorized.DELETE("/delete/:id", server.DeleteUser)
+		authorized.DELETE("/delete/:user_id", server.DeleteUser)
 
 		// Protected logout route
 		authorized.POST("/logout", server.Logout)
