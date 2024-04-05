@@ -47,7 +47,7 @@ func main() {
 	files := []string{
 		"views/user/login.html",
 		"views/user/signup.html", "views/user/logout.html",
-		"views/corp/footer.html", "views/corp/header.html",
+		"views/layout/footer.html", "views/layout/header.html",
 		"views/app/dashboard.html", "views/app/index.html", "views/404.html",
 	}
 	router.LoadHTMLFiles(files...)
