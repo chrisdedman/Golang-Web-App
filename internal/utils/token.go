@@ -39,19 +39,19 @@ func GenerateToken(user database.User) (string, error) {
 }
 
 // ValidateToken validates the JWT token provided in the request headers.
-func ValidateToken(c *gin.Context) error {
+func ValidateToken(c *gin.Context) (jwt.MapClaims, error) {
 	token, err := GetToken(c)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Check if token is valid
-	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return nil
+	if user, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return user, nil
 	}
 
-	return errors.New("invalid token provided")
+	return nil, errors.New("invalid token provided")
 }
 
 func GetToken(c *gin.Context) (*jwt.Token, error) {
