@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-web-app/config/database"
+	"github.com/golang-web-app/internal/routes"
 	"github.com/joho/godotenv"
-	"github.com/sandbox-science/deep-focus/config/database"
-	"github.com/sandbox-science/deep-focus/internal/routes"
 )
 
 func main() {

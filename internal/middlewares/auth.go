@@ -5,14 +5,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sandbox-science/deep-focus/internal/utils"
+	"github.com/golang-web-app/internal/utils"
 )
 
 /*
-JwtAuthMiddleware checks if the user is
+AuthMiddleware checks if the user is
 authorized to access the protected routes.
 */
-func JwtAuthMiddleware() gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user, err := utils.ValidateToken(c)
 

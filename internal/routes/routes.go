@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/sandbox-science/deep-focus/internal/controllers"
-	middleware "github.com/sandbox-science/deep-focus/internal/middlewares"
+	"github.com/golang-web-app/internal/controllers"
+	middleware "github.com/golang-web-app/internal/middlewares"
 	"gorm.io/gorm"
 )
 
@@ -47,7 +47,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		The following routes are only accesible by authenticated users.
 	*/
 	authorized := route.Group(("/user"))
-	authorized.Use(middleware.JwtAuthMiddleware())
+	authorized.Use(middleware.AuthMiddleware())
 	{
 		authorized.GET("/dashboard", func(ctx *gin.Context) {
 			user := ctx.MustGet("user").(jwt.MapClaims)

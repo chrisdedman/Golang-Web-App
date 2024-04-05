@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sandbox-science/deep-focus/config/database"
-	"github.com/sandbox-science/deep-focus/internal/utils"
+	"github.com/golang-web-app/config/database"
+	"github.com/golang-web-app/internal/utils"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

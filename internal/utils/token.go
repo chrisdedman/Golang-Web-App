@@ -10,7 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/sandbox-science/deep-focus/config/database"
+	"github.com/golang-web-app/config/database"
 )
 
 // GenerateToken generates a JWT token for the provided user.

@@ -1,4 +1,4 @@
-module github.com/sandbox-science/deep-focus
+module github.com/golang-web-app
 
 go 1.20
 
