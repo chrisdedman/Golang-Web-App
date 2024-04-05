@@ -113,17 +113,17 @@
       if (response.ok) {
         window.location.href = '/login';
       } else {
-        throw new Error('Registration failed');
+        return response.json(); // Parse JSON response with error message
       }
     })
     .then(data => {
       const messageDiv = document.getElementById('message');
-      console.log(data.message);
-      messageDiv.textContent = data.message;
+      console.log(data.error); // Log the error message to console
+      messageDiv.textContent = data.error; // Display the error message to the user
     })
     .catch(error => {
       console.error('Error:', error);
-      document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+      document.getElementById('message').textContent = 'An error occurred while processing your request.';
     });
   });
 </script>
