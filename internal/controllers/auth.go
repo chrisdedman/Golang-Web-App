@@ -11,6 +11,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type User struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+}
+
 type RegisterInput struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -109,15 +116,18 @@ func (s *Server) Logout(c *gin.Context) {
 // DeleteUser deletes a user from the database using the provided ID.
 func (s *Server) DeleteUser(c *gin.Context) {
 	user_id := c.Param("user_id")
-	fmt.Println(user_id)
 
-	var user database.User
+	var user User
 	if err := s.db.Where("id = ?", user_id).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
-	s.db.Delete(&user)
+	if err := s.db.Delete(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete user"})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
-	fmt.Println("User deleted")
+	fmt.Println("User", user_id, "deleted")
 }

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/sandbox-science/deep-focus/internal/controllers"
 	middleware "github.com/sandbox-science/deep-focus/internal/middlewares"
 	"gorm.io/gorm"
@@ -48,10 +49,12 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	authorized := route.Group(("/user"))
 	authorized.Use(middleware.JwtAuthMiddleware())
 	{
-		// TO-DO: Add user ID to the context for user deletion
 		authorized.GET("/dashboard", func(ctx *gin.Context) {
+			user := ctx.MustGet("user").(jwt.MapClaims)
+			userID := user["id"].(float64)
+
 			ctx.HTML(http.StatusOK, "dashboard.html", gin.H{
-				// "userID": userID,
+				"userID": userID,
 			})
 		})
 
