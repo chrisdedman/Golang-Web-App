@@ -14,7 +14,7 @@ authorized to access the protected routes.
 */
 func JwtAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := utils.ValidateToken(c)
+		user, err := utils.ValidateToken(c)
 
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"Unauthorized": "Authentication required"})
@@ -22,6 +22,7 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		c.Set("user", user)
 		c.Next()
 	}
 }
