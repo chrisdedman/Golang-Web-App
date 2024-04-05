@@ -109,7 +109,6 @@ func (s *Server) Logout(c *gin.Context) {
 // DeleteUser deletes a user from the database using the provided ID.
 func (s *Server) DeleteUser(c *gin.Context) {
 	user_id := c.Param("user_id")
-	fmt.Println(user_id)
 
 	var user database.User
 	if err := s.db.Where("id = ?", user_id).First(&user).Error; err != nil {
@@ -119,5 +118,5 @@ func (s *Server) DeleteUser(c *gin.Context) {
 
 	s.db.Delete(&user)
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
-	fmt.Println("User deleted")
+	fmt.Println("User", user_id, "deleted")
 }
