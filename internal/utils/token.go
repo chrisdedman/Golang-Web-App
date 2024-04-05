@@ -10,11 +10,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/golang-web-app/config/database"
+	"github.com/golang-web-app/config/models"
 )
 
 // GenerateToken generates a JWT token for the provided user.
-func GenerateToken(user database.User) (string, error) {
+func GenerateToken(user models.User) (string, error) {
 	tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 	if err != nil {
 		return "", err

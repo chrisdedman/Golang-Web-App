@@ -5,12 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-web-app/config/database"
+	"github.com/golang-web-app/config/models"
 	"github.com/golang-web-app/internal/utils"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
+// User represents a user in the database for deletion method.
+// This struct is used to fully delete a user data from the database.
 type User struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
@@ -18,37 +19,17 @@ type User struct {
 	Email    string `json:"email"`
 }
 
-type RegisterInput struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	Email    string `json:"email" binding:"required"`
-}
-
-type LoginInput struct {
-	Password string `json:"password" binding:"required"`
-	Email    string `json:"email" binding:"required"`
-}
-
-type Server struct {
-	db *gorm.DB
-}
-
-// NewServer creates a new server
-func NewServer(db *gorm.DB) *Server {
-	return &Server{db: db}
-}
-
 // Register creates a new user and add it to the database.
 func (s *Server) Register(c *gin.Context) {
-	var input RegisterInput
+	var input models.RegisterInput
 
 	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user := database.User{Username: input.Username, Password: input.Password, Email: input.Email}
-	user.HashPassword()
+	user := models.User{Username: input.Username, Password: input.Password, Email: input.Email}
+	utils.HashPassword(&user)
 
 	if err := s.db.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -63,9 +44,9 @@ func (s *Server) Register(c *gin.Context) {
 func (s *Server) LoginCheck(email, password string) (string, error) {
 	var err error
 
-	user := database.User{}
+	user := models.User{}
 
-	if err = s.db.Model(database.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
+	if err = s.db.Model(models.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
 		return "", err
 	}
 
@@ -86,14 +67,14 @@ func (s *Server) LoginCheck(email, password string) (string, error) {
 
 // Login logs in the user and returns a JWT token.
 func (s *Server) Login(c *gin.Context) {
-	var input LoginInput
+	var input models.LoginInput
 
 	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user := database.User{Email: input.Email, Password: input.Password}
+	user := models.User{Email: input.Email, Password: input.Password}
 	token, err := s.LoginCheck(user.Email, user.Password)
 
 	if err != nil {
@@ -114,6 +95,7 @@ func (s *Server) Logout(c *gin.Context) {
 }
 
 // DeleteUser deletes a user from the database using the provided ID.
+// All data related to the user will be deleted.
 func (s *Server) DeleteUser(c *gin.Context) {
 	user_id := c.Param("user_id")
 

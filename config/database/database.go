@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 
+	"github.com/golang-web-app/config/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -26,7 +27,7 @@ func InitDB(cfg Config) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	err = db.AutoMigrate(&User{})
+	err = db.AutoMigrate(&models.User{})
 	if err != nil {
 		return nil, err
 	}
