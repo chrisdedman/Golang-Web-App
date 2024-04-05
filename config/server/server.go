@@ -45,10 +45,10 @@ func main() {
 
 	// Load the HTML templates
 	files := []string{
-		"templates/authentication/login.html",
-		"templates/authentication/signup.html", "templates/authentication/logout.html",
-		"templates/corp/footer.html", "templates/corp/header.html",
-		"templates/app/dashboard.html", "templates/app/index.html", "templates/404.html",
+		"views/user/login.html",
+		"views/user/signup.html", "views/user/logout.html",
+		"views/corp/footer.html", "views/corp/header.html",
+		"views/app/dashboard.html", "views/app/index.html", "views/404.html",
 	}
 	router.LoadHTMLFiles(files...)
 
