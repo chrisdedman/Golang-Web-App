@@ -129,5 +129,6 @@ func (s *Server) DeleteUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
+	s.Logout(c)
 	fmt.Println("User", user_id, "deleted")
 }

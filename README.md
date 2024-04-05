@@ -46,7 +46,7 @@ make run          # Run the server using Makefile script (required Make)
 - [Make](https://www.gnu.org/software/make/)
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
 ## Demo
 
