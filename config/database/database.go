@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/golang-web-app/config/models"
+	"github.com/golang-web-app/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

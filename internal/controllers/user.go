@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-web-app/config/models"
+	"github.com/golang-web-app/internal/models"
 	"github.com/golang-web-app/internal/utils"
 	"golang.org/x/crypto/bcrypt"
 )

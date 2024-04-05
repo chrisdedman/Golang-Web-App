@@ -10,7 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/golang-web-app/config/models"
+	"github.com/golang-web-app/internal/models"
 )
 
 // GenerateToken generates a JWT token for the provided user.
