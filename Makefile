@@ -4,13 +4,14 @@ all: test vet fmt build run deps
 
 help:
 	@echo "Available targets:"
+	@echo "  make help          	- Show this help message"
 	@echo "  make run           	- Start the database, run migrations, and start the application locally"
 	@echo "  make test          	- Run tests on the codebase"
 	@echo "  make vet           	- Run go vet on the codebase to check for errors"
 	@echo "  make fmt           	- Run go fmt on the codebase to format the code"
 	@echo "  make build         	- Build the server binary and database binary"
 	@echo "  make deps          	- Update dependencies using go mod tidy"
-	@echo "  make help          	- Show this help message"
+	@echo "  make clean         	- Clean up the project build directory"
 
 deps:
 	@echo "Updating dependencies..."
