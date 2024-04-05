@@ -37,3 +37,7 @@ run: vet fmt build
 	@echo "Running server..."
 	@./bin/server
 	@./bin/database
+
+clean:
+	@echo "Cleaning up..."
+	@rm -rf bin
