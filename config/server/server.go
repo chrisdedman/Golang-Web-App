@@ -40,9 +40,17 @@ func main() {
 	router.ForwardedByClientIP = true
 	router.SetTrustedProxies([]string{"localhost"})
 
-	// Serve static files and templates
+	// Serve the static assets
 	router.Static("assets", "./assets")
-	router.LoadHTMLGlob("templates/*.html")
+
+	// Load the HTML templates
+	files := []string{
+		"templates/authentication/login.html",
+		"templates/authentication/signup.html", "templates/authentication/logout.html",
+		"templates/corp/footer.html", "templates/corp/header.html",
+		"templates/app/dashboard.html", "templates/app/index.html", "templates/404.html",
+	}
+	router.LoadHTMLFiles(files...)
 
 	// Initialize the database
 	db, err := database.InitDB(config)
