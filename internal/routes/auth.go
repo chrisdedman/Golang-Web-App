@@ -74,7 +74,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 
 		// Wildcard route for default HTML layout
 		router.NoRoute(func(c *gin.Context) {
-			c.HTML(http.StatusNotFound, "noFound.html", gin.H{})
+			c.HTML(http.StatusNotFound, "404.html", gin.H{})
 		})
 	}
 }
