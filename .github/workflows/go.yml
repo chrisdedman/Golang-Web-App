@@ -27,5 +27,5 @@ jobs:
     - name: Test
       run: make test
 
-    - name: Update dependencies and build project
+    - name: Update dependencies and build
       run: make build
