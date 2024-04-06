@@ -19,6 +19,7 @@
       .then(response => {
         if (response.ok) {
           window.location.href = '/login';
+          localStorage.removeItem('token');
         } else {
           console.error('Logout failed:', response.statusText);
           document.getElementById('message').textContent = 'Logout failed. Please try again.';
