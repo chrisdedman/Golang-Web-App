@@ -71,10 +71,10 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		authorized.GET("/logout", func(ctx *gin.Context) {
 			ctx.HTML(http.StatusOK, "logout.html", gin.H{})
 		})
-
-		// Wildcard route for default HTML layout
-		router.NoRoute(func(c *gin.Context) {
-			c.HTML(http.StatusNotFound, "404.html", gin.H{})
-		})
 	}
+
+	// Wildcard route for default HTML layout
+	router.NoRoute(func(c *gin.Context) {
+		c.HTML(http.StatusNotFound, "errors.html", gin.H{})
+	})
 }
