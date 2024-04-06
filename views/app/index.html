@@ -5,4 +5,13 @@
 <p>
 	This is a template for the main app. This is not a protected route. You can access this page without being logged in.
 </p>
+<script>
+	setMenu([
+		{ text: 'Home', url: '/' },
+		{ text: 'Login', url: '/login' },
+		{ text: 'Sign Up', url: '/signup' },
+		{ text: 'Dashboard', url: '/user/dashboard' },
+		{ text: 'Log Out', url: '/user/logout' }
+	]);
+</script>
 {{template "footer.html"}}

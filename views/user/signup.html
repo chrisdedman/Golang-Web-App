@@ -77,7 +77,10 @@
   <div id="message"></div>
 </div>
 <script>
-
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Login', url: '/login' }
+  ]);
   document.getElementById('signup-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -96,7 +99,7 @@
     const formData = {
       username: username,
       email: email,
-      password: password 
+      password: password
     };
 
     // Send POST request to backend
@@ -105,26 +108,26 @@
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')  
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(formData)
     })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = '/login';
-      } else {
-        return response.json(); // Parse JSON response with error message
-      }
-    })
-    .then(data => {
-      const messageDiv = document.getElementById('message');
-      console.log(data.error); // Log the error message to console
-      messageDiv.textContent = data.error; // Display the error message to the user
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('message').textContent = 'An error occurred while processing your request.';
-    });
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/login';
+        } else {
+          return response.json();
+        }
+      })
+      .then(data => {
+        const messageDiv = document.getElementById('message');
+        console.log(data.error);
+        messageDiv.textContent = data.error;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('message').textContent = 'An error occurred while processing your request.';
+      });
   });
 </script>
 {{template "footer.html"}}
