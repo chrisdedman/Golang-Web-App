@@ -17,7 +17,9 @@ func AuthMiddleware() gin.HandlerFunc {
 		user, err := utils.ValidateToken(c)
 
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"Unauthorized": "Authentication required"})
+			c.HTML(http.StatusUnauthorized, "errors.html", gin.H{
+				"Unauthorized": "Authentication required",
+			})
 			fmt.Println(err)
 			c.Abort()
 			return
