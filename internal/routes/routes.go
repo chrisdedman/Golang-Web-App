@@ -35,7 +35,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			ctx.HTML(http.StatusOK, "signup.html", gin.H{})
 		})
 
-		route.GET("/health", func(c *gin.Context) {
+		route.GET("/healthcheck", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
 			})
