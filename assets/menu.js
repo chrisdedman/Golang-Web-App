@@ -1,10 +1,21 @@
 /* 
-  setmenu() function is used to redirect 
+  setmenu() function is used to set menu items dynamically
   the user to the selected menu option from the frontend.
 */
-function setmenu(option) {
-  var host             = window.location.origin;
-  window.location.href = host + option;
+function setMenu(menuItems) {
+  const menuContainer = document.getElementById('menu');
+  menuContainer.innerHTML = ''; // Clear existing menu items
+
+  // Loop through menuItems array and create buttons for each item
+  menuItems.forEach(item => {
+    const button = document.createElement('button');
+    button.classList.add('menu');
+    button.textContent = item.text;
+    button.onclick = () => {
+      window.location.href = item.url;
+    };
+    menuContainer.appendChild(button);
+  });
 }
 
 /*
