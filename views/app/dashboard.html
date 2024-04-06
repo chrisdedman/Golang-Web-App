@@ -23,6 +23,7 @@
           if (response.ok) {
             alert('User deleted successfully.');
             window.location.href = '/signup';
+            localStorage.removeItem('token');
           } else {
             alert('Error deleting user.');
           }
