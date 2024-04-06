@@ -35,7 +35,7 @@ build: deps
 	@go build -o bin/server ./config/server
 	@go build -o bin/database ./config/database
 
-run: vet fmt clean build
+run: vet fmt build
 	@echo "Running server..."
 	@./bin/server
 	@./bin/database
