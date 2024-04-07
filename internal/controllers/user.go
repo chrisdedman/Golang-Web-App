@@ -114,3 +114,21 @@ func (s *Server) DeleteUser(c *gin.Context) {
 	s.Logout(c)
 	fmt.Println("User", user_id, "deleted")
 }
+
+// UpdateAccount updates the user account with the provided data.
+func (s *Server) UpdateAccount(c *gin.Context) {
+	var input models.UpdateAccount
+
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	updatedUser := models.User{Username: input.Username, Password: input.Password}
+	utils.HashPassword(&updatedUser)
+
+	if err := s.db.Model(&updatedUser).Updates(models.User{Username: updatedUser.Username, Password: updatedUser.Password}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+}
