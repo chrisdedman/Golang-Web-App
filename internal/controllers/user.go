@@ -138,4 +138,7 @@ func (s *Server) UpdateAccount(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "User account updated"})
+	fmt.Println("User", user_id, "updated")
 }
