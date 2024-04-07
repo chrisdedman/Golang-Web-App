@@ -1,0 +1,22 @@
+{{template "header.html" }}
+
+{{if .Unauthorized}}
+  <p>
+    {{.Unauthorized}}<br>
+    You are not authorized to view this page. Please log in and try again.
+  </p>
+{{else}}
+  <p>
+    The page you are looking for does not exist. Please check the URL and try again.
+  </p>
+{{end}}
+
+<script>
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Sign Up', url: '/signup' },
+    { text: 'Log In', url: '/login' }
+  ]);
+</script>
+
+{{template "footer.html"}}

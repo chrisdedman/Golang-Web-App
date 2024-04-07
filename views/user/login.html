@@ -16,13 +16,18 @@
       placeholder="Password"
       id="password" 
       name="password"
-      required=
+      required
     >
     <button type="submit">Log In</button>
   </form>
   <div id="message"></div>
 </div>
 <script>
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Sign Up', url: '/signup' }
+  ]);
+
   document.getElementById('login-form').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form submission
 
@@ -53,7 +58,6 @@
         const messageDiv = document.getElementById('message');
         if (data.token) {
           localStorage.setItem('token', data.token);
-
           window.location.href = '/user/dashboard';
         } else {
           messageDiv.textContent = data.error;

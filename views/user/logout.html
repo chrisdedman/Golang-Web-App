@@ -7,23 +7,28 @@
   <div id="message"></div>
 </div>
 <script>
-  document.getElementById('logoutButton').addEventListener('click', function() {
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Dashboard', url: '/user/dashboard' }
+  ]);
+  document.getElementById('logoutButton').addEventListener('click', function () {
     fetch('/user/logout', {
       method: 'POST',
       credentials: 'same-origin'
     })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = '/login';
-      } else {
-        console.error('Logout failed:', response.statusText);
-        document.getElementById('message').textContent = 'Logout failed. Please try again.';
-      }
-    })
-    .catch(error => {
-      console.error('Error logging out:', error);
-      document.getElementById('message').textContent = 'An error occurred. Please try again later.';
-    });
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/login';
+          localStorage.removeItem('token');
+        } else {
+          console.error('Logout failed:', response.statusText);
+          document.getElementById('message').textContent = 'Logout failed. Please try again.';
+        }
+      })
+      .catch(error => {
+        console.error('Error logging out:', error);
+        document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+      });
   });
 </script>
 {{template "footer.html"}}

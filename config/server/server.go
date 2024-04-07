@@ -48,7 +48,7 @@ func main() {
 		"views/user/login.html",
 		"views/user/signup.html", "views/user/logout.html",
 		"views/layout/footer.html", "views/layout/header.html",
-		"views/app/dashboard.html", "views/app/index.html", "views/404.html",
+		"views/app/dashboard.html", "views/app/index.html", "views/errors.html",
 	}
 	router.LoadHTMLFiles(files...)
 

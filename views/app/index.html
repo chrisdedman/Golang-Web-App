@@ -5,4 +5,22 @@
 <p>
 	This is a template for the main app. This is not a protected route. You can access this page without being logged in.
 </p>
+<script>
+	const isAuthenticated = localStorage.getItem('token') !== null;
+	
+	let menuItems = [
+		{ text: 'Home', url: '/' },
+	];
+
+	if (isAuthenticated) {
+		menuItems.push({ text: 'Dashboard', url: '/user/dashboard' });
+		menuItems.push({ text: 'Log Out', url: '/user/logout' });
+	} else {
+		menuItems.push({ text: 'Login', url: '/login' });
+		menuItems.push({ text: 'Sign Up', url: '/signup' });
+	}
+
+	// Set menu items
+	setMenu(menuItems);
+</script>
 {{template "footer.html"}}

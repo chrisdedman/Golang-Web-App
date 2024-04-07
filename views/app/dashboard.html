@@ -3,12 +3,16 @@
   Golang Web App Template Dashboard
 </h1>
 <button class="warning" id="delete-btn">Delete User</button>
-<button class="warning" onclick='setmenu("/user/logout")'>Log Out</button>
 <p>
   This is the main app. This is a protected route. You can only access this page if you are logged in.
 </p>
 
 <script>
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Dashboard', url: '/user/dashboard' },
+    { text: 'Log Out', url: '/user/logout' }
+  ]);
   document.getElementById('delete-btn').addEventListener('click', function () {
     if (confirm('Are you sure you want to delete your account?')) {
       fetch('/user/delete/{{.userID}}', {
@@ -19,6 +23,7 @@
           if (response.ok) {
             alert('User deleted successfully.');
             window.location.href = '/signup';
+            localStorage.removeItem('token');
           } else {
             alert('Error deleting user.');
           }
