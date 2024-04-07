@@ -117,6 +117,13 @@ func (s *Server) DeleteUser(c *gin.Context) {
 
 // UpdateAccount updates the user account with the provided data.
 func (s *Server) UpdateAccount(c *gin.Context) {
+	user_id := c.Param("user_id")
+
+	if err := s.db.Where("id = ?", user_id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
 	var input models.UpdateAccount
 
 	if err := c.ShouldBind(&input); err != nil {
