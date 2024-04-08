@@ -1,0 +1,96 @@
+{{template "header.html" }}
+<div class="box">
+  <h1 class="title">Update Account</h1>
+  <form id="update-form">
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="New Username (optional)"
+    />
+
+    <div class="input-group">
+      <input 
+        class="checkbox"
+        type="checkbox"
+        id="newPassword"
+        name="newPassword"
+        value="Password"
+        onchange="togglePasswordFields()"
+      /> Update Password?
+    </div>
+
+    <div id="confirmPasswordDiv" style="display: none;">
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        placeholder="New Password (optional)"
+      />
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        placeholder="Confirm New Password"
+      />
+    </div>
+    <button type="submit">Log In</button>
+  </form>
+  <div id="message"></div>
+</div>
+
+<script>
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Dashboard', url: '/user/dashboard' },
+    { text: 'Log Out', url: '/user/logout' }
+  ]);
+
+  document.getElementById('update-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const newPassword = document.getElementById('newPassword').checked;
+
+    if (newPassword) {
+      if(!passwordRequirements(password, confirmPassword))
+      {
+        return;
+      }
+    }
+
+    // Get form data
+    const formData = {
+      username: username,
+      password: password
+    };
+
+    // Send PUT request to backend
+    fetch('/user/update/{{.userID}}', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/user/dashboard';
+        } else {
+          return response.json();
+        }
+      })
+      .then(() => {
+        const messageDiv = document.getElementById('message');
+        console.log("Account updated successfully.");
+        messageDiv.textContent = "Account updated successfully.";
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('message').textContent = 'An error occurred while processing your request.';
+      });
+  });
+</script>
+{{template "footer.html"}}
