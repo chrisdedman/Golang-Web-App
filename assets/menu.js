@@ -19,6 +19,35 @@ function setMenu(menuItems) {
 }
 
 /*
+  togglePasswordFields() function is used to show/hide the confirm password field
+  when the user checks the "New Password" checkbox.
+*/
+function togglePasswordFields() {
+  var newPasswordCheckbox = document.getElementById('newPassword');
+  var confirmPasswordDiv = document.getElementById('confirmPasswordDiv');
+
+  if (newPasswordCheckbox.checked) {
+    confirmPasswordDiv.style.display = 'block';
+  } else {
+    confirmPasswordDiv.style.display = 'none';
+  }
+}
+
+/*
+  passwordRequirements() function is used to check if the password meets the requirements
+  and matches the confirm password. If the password does not meet the requirements,
+  an error message will be displayed.
+*/  
+function passwordRequirements(password, confirmPassword) {
+  // Check if password meets requirements and matches confirm password
+  if (password.length < 8 || !/\d/.test(password) || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || password !== confirmPassword) {
+    document.getElementById('message').textContent = 'Password does not meet requirements.';
+    return false;
+  }
+  return true;
+}
+
+/*
   Validate password. Check for at least 8 characters, 
   one number, one uppercase letter, one lowercase letter, 
   and that the password matches the confirm password.
