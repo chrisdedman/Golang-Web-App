@@ -124,7 +124,7 @@ button[type=submit]:hover {
   border-radius: 3rem;
 }
 
-/* Form Style */
+/* Form & Input Style */
 form {
   width: 30%;
   max-width: 400px;
@@ -139,11 +139,16 @@ form {
   gap: 0;
 }
 
-input {
+input[type=text], input[type=password] {
   width: 200px;
   height: 10px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid hsl(0, 0%, 60%);
   margin-bottom: 5px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
 }
