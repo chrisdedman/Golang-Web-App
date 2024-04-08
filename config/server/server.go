@@ -45,8 +45,8 @@ func main() {
 
 	// Load the HTML templates
 	files := []string{
-		"views/user/login.html",
-		"views/user/signup.html", "views/user/logout.html",
+		"views/user/authentication/login.html", "views/user/authentication/signup.html",
+		"views/user/authentication/logout.html", "views/user/account/update.html",
 		"views/layout/footer.html", "views/layout/header.html",
 		"views/app/dashboard.html", "views/app/index.html", "views/errors.html",
 	}

@@ -90,8 +90,8 @@
     const confirmPassword = document.getElementById('confirmPassword').value;
 
     // Check if password meets requirements
-    if (password.length < 8 || !/\d/.test(password) || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || password !== confirmPassword) {
-      document.getElementById('message').textContent = 'Password does not meet requirements.';
+    if(!passwordRequirements(password, confirmPassword))
+    {
       return;
     }
 
