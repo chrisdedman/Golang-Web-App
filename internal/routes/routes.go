@@ -67,6 +67,14 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		authorized.DELETE("/delete/:user_id", server.DeleteUser)
 		authorized.PUT("/update/:user_id", server.UpdateAccount)
 
+		authorized.GET("/update/", func(ctx *gin.Context) {
+			user := ctx.MustGet("user").(jwt.MapClaims)
+			userID := user["id"].(float64)
+			ctx.HTML(http.StatusOK, "update.html", gin.H{
+				"userID": userID,
+			})
+		})
+
 		// Protected logout route
 		authorized.POST("/logout", server.Logout)
 		authorized.GET("/logout", func(ctx *gin.Context) {
