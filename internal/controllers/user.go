@@ -117,28 +117,35 @@ func (s *Server) DeleteUser(c *gin.Context) {
 
 // UpdateAccount updates the user account with the provided data.
 func (s *Server) UpdateAccount(c *gin.Context) {
-	user_id := c.Param("user_id")
+	userID := c.Param("user_id")
+	fmt.Println("Updating user", userID)
 
-	if err := s.db.Where("id = ?", user_id).Error; err != nil {
+	var user models.User
+	if err := s.db.Where("id = ?", userID).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
 	var input models.UpdateAccount
-
 	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	updatedUser := models.User{Username: input.Username, Password: input.Password}
-	utils.HashPassword(&updatedUser)
+	if input.Username != "" {
+		user.Username = input.Username
+	}
 
-	if err := s.db.Model(&updatedUser).Updates(models.User{Username: updatedUser.Username, Password: updatedUser.Password}).Error; err != nil {
+	if input.Password != "" {
+		user.Password = input.Password
+		utils.HashPassword(&user)
+	}
+
+	if err := s.db.Save(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User account updated"})
-	fmt.Println("User", user_id, "updated")
+	fmt.Println("User", userID, "updated")
 }
