@@ -2,8 +2,8 @@
 <h1 class="title">
   Golang Web App Template Dashboard
 </h1>
-<button class="warning" id="delete-btn">Delete User</button>
-<button class="warning" id="update-btn" onclick="window.location.href = '/user/update/'">Update Account</button>
+<button class="warning" onclick="window.location.href = '/user/delete'">Delete User</button>
+<button class="warning" onclick="window.location.href = '/user/update'">Update Account</button>
 <p>
   This is the main app. This is a protected route. You can only access this page if you are logged in.
 </p>
@@ -14,26 +14,5 @@
     { text: 'Dashboard', url: '/user/dashboard' },
     { text: 'Log Out', url: '/user/logout' }
   ]);
-  document.getElementById('delete-btn').addEventListener('click', function () {
-    if (confirm('Are you sure you want to delete your account?')) {
-      fetch('/user/delete/{{.userID}}', {
-        method: 'DELETE',
-        credentials: 'include'
-      })
-        .then(response => {
-          if (response.ok) {
-            alert('User deleted successfully.');
-            window.location.href = '/signup';
-            localStorage.removeItem('token');
-          } else {
-            alert('Error deleting user.');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Error deleting user.');
-        });
-    }
-  });
 </script>
 {{template "footer.html"}}
