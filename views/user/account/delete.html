@@ -1,0 +1,36 @@
+{{template "header.html" }}
+<div class="box">
+  <h1 class="title">Delete Account</h1>
+  <p>
+    Are you sure you want to delete your account? This action cannot be undone.
+  </p>
+  <button class="warning" id="delete-btn">Delete User</button>
+</div>
+
+<script>
+  setMenu([
+    { text: 'Home', url: '/' },
+    { text: 'Dashboard', url: '/user/dashboard' },
+    { text: 'Log Out', url: '/user/logout' }
+  ]);
+  document.getElementById('delete-btn').addEventListener('click', function () {
+    fetch('/user/delete/{{.userID}}', {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+      .then(response => {
+        if (response.ok) {
+          alert('User deleted successfully.');
+          window.location.href = '/signup';
+          localStorage.removeItem('token');
+        } else {
+          alert('Error deleting user.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting user.');
+      });
+  });
+</script>
+{{template "footer.html"}}
