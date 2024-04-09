@@ -78,6 +78,7 @@
       .then(response => {
         if (response.ok) {
           window.location.href = '/user/dashboard';
+          alert('Account updated successfully.');
         } else {
           return response.json();
         }
