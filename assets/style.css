@@ -126,9 +126,8 @@ button[type=submit]:hover {
 
 /* Form & Input Style */
 form {
-  width: 30%;
+  width: 400px;
   max-width: 400px;
-  margin: 0 auto;
   box-sizing: border-box;
   padding: 2rem;
   border-radius: 3rem;
@@ -151,4 +150,36 @@ input[type=text], input[type=password] {
 .input-group {
   display: flex;
   align-items: center;
+}
+
+/* Media Queries */
+@media screen and (max-width: 600px) {
+  form {
+    width: 90%;
+    max-width: none;
+    box-sizing: content-box;
+  }
+  
+  input[type=text], input[type=password] {
+    width: 190px;
+    height: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid hsl(0, 0%, 60%);
+    margin-bottom: 5px;
+  }
+
+  #footer {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    background: #888;
+    color: white;
+    padding: 10px 0 0 20px;
+    font-size: 14px;
+  }
 }
