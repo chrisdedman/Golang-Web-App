@@ -114,8 +114,8 @@
     })
       .then(response => {
         if (response.ok) {
-          window.location.href = '/login';
           alert('Account created successfully. Please log in.')
+          window.location.href = '/login';
         } else {
           return response.json();
         }
