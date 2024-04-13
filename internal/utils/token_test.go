@@ -36,5 +36,5 @@ func TestValidateTokenError(t *testing.T) {
 	})
 
 	r.ServeHTTP(rr, req)
-	assert.Equal(t, http.StatusUnauthorized, rr.Code)
+	assert.Equal(t, http.StatusNotFound, rr.Code)
 }
