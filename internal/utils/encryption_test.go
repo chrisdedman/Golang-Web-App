@@ -9,7 +9,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// TestHashPassword tests the HashPassword function.
 func TestHashPassword(t *testing.T) {
 	user := &models.User{
 		Password: "password123",
@@ -20,13 +19,18 @@ func TestHashPassword(t *testing.T) {
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte("password123"))
 	assert.NoError(t, err)
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte("password1234"))
+	assert.Error(t, err)
 }
 
-// TestVerifyPassword tests the VerifyPassword function.
 func TestVerifyPassword(t *testing.T) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 	assert.NoError(t, err)
 
 	err = utils.VerifyPassword("password123", string(hashedPassword))
 	assert.NoError(t, err)
+
+	err = utils.VerifyPassword("password1234", string(hashedPassword))
+	assert.Error(t, err)
 }
