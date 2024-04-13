@@ -12,8 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGenerateToken tests the GenerateToken function
-// @Test
 func TestGenerateToken(t *testing.T) {
 	err := godotenv.Load("../../.env.example")
 	assert.NoError(t, err)
