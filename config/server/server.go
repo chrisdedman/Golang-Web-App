@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"log"
@@ -10,7 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func Server() {
 	// Initialize the Gin router
 	router := gin.Default()
 
