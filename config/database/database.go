@@ -17,7 +17,6 @@ type Config struct {
 	SSLMode  string
 }
 
-// InitDB initializes the database connection and performs necessary migrations.
 func InitDB(cfg Config) (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)

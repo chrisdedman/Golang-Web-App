@@ -18,7 +18,6 @@ type User struct {
 	Email    string `json:"email"`
 }
 
-// Register creates a new user and add it to the database.
 func (s *Server) Register(c *gin.Context) {
 	var input models.RegisterInput
 
@@ -39,26 +38,6 @@ func (s *Server) Register(c *gin.Context) {
 	fmt.Println("User created")
 }
 
-// AuthenticateUser authenticates the user credentials and returns a JWT token if successful.
-func (s *Server) AuthenticateUser(email, password string) (string, error) {
-	var user models.User
-	if err := s.db.Model(models.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
-		return "", fmt.Errorf("account not found")
-	}
-
-	if err := utils.VerifyPassword(password, user.Password); err != nil {
-		return "", fmt.Errorf("incorrect password")
-	}
-
-	token, err := utils.GenerateToken(user)
-	if err != nil {
-		return "", fmt.Errorf("failed to generate token")
-	}
-
-	return token, nil
-}
-
-// Login logs in the user and returns a JWT token.
 func (s *Server) Login(c *gin.Context) {
 	var input models.LoginInput
 	if err := c.ShouldBind(&input); err != nil {
@@ -77,15 +56,30 @@ func (s *Server) Login(c *gin.Context) {
 	fmt.Println("Login successful")
 }
 
-// Logout logs out the user, and deletes the JWT token.
+func (s *Server) AuthenticateUser(email, password string) (string, error) {
+	var user models.User
+	if err := s.db.Model(models.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
+		return "", fmt.Errorf("account not found")
+	}
+
+	if err := utils.VerifyPassword(password, user.Password); err != nil {
+		return "", fmt.Errorf("incorrect password")
+	}
+
+	token, err := utils.GenerateToken(user)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate token")
+	}
+
+	return token, nil
+}
+
 func (s *Server) Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
 	fmt.Println("Logout successful")
 }
 
-// DeleteUser deletes a user from the database using the provided ID.
-// All data related to the user will be deleted.
 func (s *Server) DeleteUser(c *gin.Context) {
 	user_id := c.Param("user_id")
 
@@ -105,7 +99,6 @@ func (s *Server) DeleteUser(c *gin.Context) {
 	fmt.Println("User", user_id, "deleted")
 }
 
-// UpdateAccount updates the user account with the provided data.
 func (s *Server) UpdateAccount(c *gin.Context) {
 	userID := c.Param("user_id")
 	fmt.Println("Updating user", userID)

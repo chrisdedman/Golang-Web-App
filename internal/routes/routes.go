@@ -10,10 +10,12 @@ import (
 	"gorm.io/gorm"
 )
 
-// AuthRoutes registers the authentication routes to the provided Gin router.
 func AuthRoutes(router *gin.Engine, db *gorm.DB) {
-	// Create a new server instance
 	server := controllers.NewServer(db)
+
+	router.NoRoute(func(c *gin.Context) {
+		c.HTML(http.StatusNotFound, "errors.html", gin.H{})
+	})
 
 	/*
 		Register the authentication routes. Not protected by JWT middleware.
@@ -78,15 +80,9 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			})
 		})
 
-		// Protected logout route
 		authorized.POST("/logout", server.Logout)
 		authorized.GET("/logout", func(ctx *gin.Context) {
 			ctx.HTML(http.StatusOK, "logout.html", gin.H{})
 		})
 	}
-
-	// Wildcard route for default HTML layout
-	router.NoRoute(func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "errors.html", gin.H{})
-	})
 }

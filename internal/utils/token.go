@@ -13,14 +13,12 @@ import (
 	"github.com/golang-web-app/internal/models"
 )
 
-// GenerateToken generates a JWT token for the provided user.
 func GenerateToken(user models.User) (string, error) {
 	tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 	if err != nil {
 		return "", err
 	}
 
-	// Set token claims
 	claims := jwt.MapClaims{
 		"auth": true,
 		"id":   user.ID,
@@ -28,7 +26,6 @@ func GenerateToken(user models.User) (string, error) {
 		"role": "user",
 	}
 
-	// Generate token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString([]byte(os.Getenv("API_SECRET")))
 	if err != nil {
@@ -38,7 +35,6 @@ func GenerateToken(user models.User) (string, error) {
 	return tokenString, nil
 }
 
-// ValidateToken validates the JWT token provided in the request headers.
 func ValidateToken(c *gin.Context) (jwt.MapClaims, error) {
 	token, err := GetToken(c)
 
@@ -46,7 +42,6 @@ func ValidateToken(c *gin.Context) (jwt.MapClaims, error) {
 		return nil, err
 	}
 
-	// Check if token is valid
 	if user, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return user, nil
 	}
@@ -55,7 +50,6 @@ func ValidateToken(c *gin.Context) (jwt.MapClaims, error) {
 }
 
 func GetToken(c *gin.Context) (*jwt.Token, error) {
-	// Extract token from request header
 	tokenString := GetTokenFromRequest(c)
 
 	if tokenString == "" {
@@ -92,7 +86,6 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 	return token, nil
 }
 
-// getTokenFromRequest extracts the JWT token from the request headers.
 func GetTokenFromRequest(c *gin.Context) string {
 	authHeader := c.Request.Header.Get("Cookie")
 	if authHeader == "" {
