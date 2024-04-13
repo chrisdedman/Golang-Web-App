@@ -67,10 +67,9 @@ func TestAuthRoutes(t *testing.T) {
 	assert.Equal(t, "/user/logout", routes[11].Path)
 	assert.Equal(t, "POST", routes[11].Method)
 
-	assert.Equal(t, "/user/delete/:user_id", routes[12].Path)
-	assert.Equal(t, "DELETE", routes[12].Method)
+	assert.Equal(t, "/user/update/:user_id", routes[12].Path)
+	assert.Equal(t, "PUT", routes[12].Method)
 
-	assert.Equal(t, "/user/update/:user_id", routes[13].Path)
-	assert.Equal(t, "PUT", routes[13].Method)
-
+	assert.Equal(t, "/user/delete/:user_id", routes[13].Path)
+	assert.Equal(t, "DELETE", routes[13].Method)
 }
