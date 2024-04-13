@@ -32,7 +32,7 @@ fmt:
 
 build: deps
 	@echo "Building server binary..."
-	@go build -o bin/server ./config/server
+	@go build -o bin/server ./
 	@go build -o bin/database ./config/database
 
 run: vet fmt clean build
