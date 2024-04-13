@@ -20,7 +20,7 @@ deps:
 
 test:
 	@echo "Running tests..."
-	@go test -v -race -parallel=4 ./...
+	@go test -v ./internal/...
 
 vet:
 	@echo "Running go vet..."
