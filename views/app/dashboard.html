@@ -2,8 +2,13 @@
 <h1 class="title">
   Golang Web App Template Dashboard
 </h1>
-<button class="warning" onclick="window.location.href = '/user/delete'">Delete User</button>
-<button class="warning" onclick="window.location.href = '/user/update'">Update Account</button>
+<div class="dropdown">
+  <button onclick="settings()" class="dropbtn">Account Settings</button>
+  <div id="setting" class="dropdown-content">
+    <a href='/user/update'>Update Account</a>
+    <a href='/user/delete'>Delete Account</a>
+  </div>
+</div>
 <p>
   This is the main app. This is a protected route. You can only access this page if you are logged in.
 </p>
