@@ -24,8 +24,8 @@ jobs:
     - name: Check for formatting errors
       run: make fmt
 
-    - name: Test
-      run: make test
-
     - name: Update dependencies and build
       run: make build
+
+    - name: Test
+      run: make test
