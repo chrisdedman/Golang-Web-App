@@ -52,7 +52,6 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	authorized.Use(middleware.AuthMiddleware())
 	{
 		authorized.GET("/dashboard", func(ctx *gin.Context) {
-
 			ctx.HTML(http.StatusOK, "dashboard.html", gin.H{})
 		})
 
@@ -62,9 +61,7 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 			})
 		})
 
-		authorized.DELETE("/delete/:user_id", server.DeleteUser)
 		authorized.PUT("/update/:user_id", server.UpdateAccount)
-
 		authorized.GET("/update", func(ctx *gin.Context) {
 			user := ctx.MustGet("user").(jwt.MapClaims)
 			userID := user["id"].(float64)
@@ -72,6 +69,8 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 				"userID": userID,
 			})
 		})
+
+		authorized.DELETE("/delete/:user_id", server.DeleteUser)
 		authorized.GET("/delete", func(ctx *gin.Context) {
 			user := ctx.MustGet("user").(jwt.MapClaims)
 			userID := user["id"].(float64)
