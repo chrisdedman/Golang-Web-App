@@ -56,7 +56,7 @@ func ValidateToken(c *gin.Context) (jwt.MapClaims, error) {
 
 func GetToken(c *gin.Context) (*jwt.Token, error) {
 	// Extract token from request header
-	tokenString := getTokenFromRequest(c)
+	tokenString := GetTokenFromRequest(c)
 
 	if tokenString == "" {
 		return nil, errors.New("no token provided")
@@ -93,7 +93,7 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 }
 
 // getTokenFromRequest extracts the JWT token from the request headers.
-func getTokenFromRequest(c *gin.Context) string {
+func GetTokenFromRequest(c *gin.Context) string {
 	authHeader := c.Request.Header.Get("Cookie")
 	if authHeader == "" {
 		return ""
