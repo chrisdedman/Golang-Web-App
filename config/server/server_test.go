@@ -17,7 +17,5 @@ func TestServer(t *testing.T) {
 
 	listenAddr := os.Getenv("HOST_ADDR")
 	assert.NotEmpty(t, listenAddr)
-
-	// Initialize the routes and run the server
 	assert.NotNil(t, router)
 }
