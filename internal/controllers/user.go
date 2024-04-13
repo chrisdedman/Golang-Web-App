@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-web-app/internal/models"
 	"github.com/golang-web-app/internal/utils"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // User represents a user in the database for deletion method.
@@ -40,26 +39,20 @@ func (s *Server) Register(c *gin.Context) {
 	fmt.Println("User created")
 }
 
-// LoginCheck checks if the user exists in the database.
-func (s *Server) LoginCheck(email, password string) (string, error) {
-	var err error
-
-	user := models.User{}
-
-	if err = s.db.Model(models.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
-		return "", err
+// AuthenticateUser authenticates the user credentials and returns a JWT token if successful.
+func (s *Server) AuthenticateUser(email, password string) (string, error) {
+	var user models.User
+	if err := s.db.Model(models.User{}).Where("email = ?", email).Take(&user).Error; err != nil {
+		return "", fmt.Errorf("account not found")
 	}
 
-	err = utils.VerifyPassword(password, user.Password)
-
-	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-		return "", err
+	if err := utils.VerifyPassword(password, user.Password); err != nil {
+		return "", fmt.Errorf("incorrect password")
 	}
 
 	token, err := utils.GenerateToken(user)
-
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to generate token")
 	}
 
 	return token, nil
@@ -68,17 +61,14 @@ func (s *Server) LoginCheck(email, password string) (string, error) {
 // Login logs in the user and returns a JWT token.
 func (s *Server) Login(c *gin.Context) {
 	var input models.LoginInput
-
 	if err := c.ShouldBind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user := models.User{Email: input.Email, Password: input.Password}
-	token, err := s.LoginCheck(user.Email, user.Password)
-
+	token, err := s.AuthenticateUser(input.Email, input.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "The email or password is not correct"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
