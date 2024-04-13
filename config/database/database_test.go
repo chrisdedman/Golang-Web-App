@@ -10,20 +10,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type Config struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-	SSLMode  string
-}
-
 func TestInitDB(t *testing.T) {
 	err := godotenv.Load("../../.env")
 	assert.NoError(t, err)
 
-	config := database.Config{
+	config := models.DatabaseConfig{
 		Host:     os.Getenv("DB_HOST"),
 		Port:     os.Getenv("DB_PORT"),
 		User:     os.Getenv("DB_USER"),
