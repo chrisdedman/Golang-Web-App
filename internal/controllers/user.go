@@ -35,7 +35,6 @@ func (s *Server) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User created"})
-	fmt.Println("User created")
 }
 
 func (s *Server) Login(c *gin.Context) {
@@ -53,7 +52,6 @@ func (s *Server) Login(c *gin.Context) {
 
 	c.SetCookie("token", token, 3600, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"token": token})
-	fmt.Println("Login successful")
 }
 
 func (s *Server) AuthenticateUser(email, password string) (string, error) {
@@ -77,7 +75,6 @@ func (s *Server) AuthenticateUser(email, password string) (string, error) {
 func (s *Server) Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
-	fmt.Println("Logout successful")
 }
 
 func (s *Server) DeleteUser(c *gin.Context) {
@@ -85,18 +82,17 @@ func (s *Server) DeleteUser(c *gin.Context) {
 
 	var user User
 	if err := s.db.Where("id = ?", user_id).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	}
 
 	if err := s.db.Delete(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete user"})
 		return
 	}
 
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
-	fmt.Println("User", user_id, "deleted")
 }
 
 func (s *Server) UpdateAccount(c *gin.Context) {
@@ -104,7 +100,7 @@ func (s *Server) UpdateAccount(c *gin.Context) {
 
 	var user models.User
 	if err := s.db.Where("id = ?", userID).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not authorized to update account"})
 		return
 	}
 
@@ -129,5 +125,4 @@ func (s *Server) UpdateAccount(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User account updated"})
-	fmt.Println("User", userID, "updated")
 }
