@@ -1,6 +1,7 @@
 {{template "header.html" }}
 <div class="box">
   <h1 class="title">Delete Account</h1>
+  <span style='font-size:48px;color:red;'>&#9888;</span>
   <p>
     Are you sure you want to delete your account? This action cannot be undone.
   </p>
@@ -21,8 +22,8 @@
       .then(response => {
         if (response.ok) {
           alert('User deleted successfully.');
-          window.location.href = '/signup';
           localStorage.removeItem('token');
+          window.location.href = '/signup';
         } else {
           alert('Error deleting user.');
         }
