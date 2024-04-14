@@ -1,4 +1,4 @@
-{{template "header.html"}}
+{{ template "header.html" . }}
 <h1 class="title">
 	Golang Web App Template
 </h1>
@@ -14,7 +14,6 @@
 
 	if (isAuthenticated) {
 		menuItems.push({ text: 'Dashboard', url: '/user/dashboard' });
-		menuItems.push({ text: 'Log Out', url: '/user/logout' });
 	} else {
 		menuItems.push({ text: 'Login', url: '/login' });
 		menuItems.push({ text: 'Sign Up', url: '/signup' });
