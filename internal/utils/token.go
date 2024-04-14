@@ -64,12 +64,6 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 		return []byte(os.Getenv("API_SECRET")), nil
 	})
 
-	if token.Valid {
-		fmt.Println("Token is valid:", token.Valid)
-	} else {
-		fmt.Println("Error: Token is invalid:", err)
-	}
-
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
