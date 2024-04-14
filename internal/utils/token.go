@@ -20,10 +20,12 @@ func GenerateToken(user models.User) (string, error) {
 	}
 
 	claims := jwt.MapClaims{
-		"auth": true,
-		"id":   user.ID,
-		"exp":  time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix(),
-		"role": "user",
+		"auth":     true,
+		"id":       user.ID,
+		"email":    user.Email,
+		"username": user.Username,
+		"exp":      time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix(),
+		"role":     "user",
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -50,10 +52,9 @@ func ValidateToken(c *gin.Context) (jwt.MapClaims, error) {
 }
 
 func GetToken(c *gin.Context) (*jwt.Token, error) {
-	tokenString := GetTokenFromRequest(c)
-
-	if tokenString == "" {
-		return nil, errors.New("no token provided")
+	tokenString, err := GetTokenFromRequest(c)
+	if err != nil {
+		return nil, err
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -65,25 +66,16 @@ func GetToken(c *gin.Context) (*jwt.Token, error) {
 	})
 
 	if err != nil {
-		if ve, ok := err.(*jwt.ValidationError); ok {
-			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, errors.New("token is malformed")
-			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
-				return nil, errors.New("token is expired or not yet valid")
-			} else {
-				return nil, fmt.Errorf("token validation error: %v", err)
-			}
-		}
-		return nil, fmt.Errorf("failed to parse token: %v", err)
+		return nil, err
 	}
 
 	return token, nil
 }
 
-func GetTokenFromRequest(c *gin.Context) string {
+func GetTokenFromRequest(c *gin.Context) (string, error) {
 	authHeader := c.Request.Header.Get("Cookie")
 	if authHeader == "" {
-		return ""
+		return "", errors.New("no cookie provided")
 	}
 
 	cookieParts := strings.Split(authHeader, ";")
@@ -96,5 +88,5 @@ func GetTokenFromRequest(c *gin.Context) string {
 		}
 	}
 
-	return token
+	return token, nil
 }
