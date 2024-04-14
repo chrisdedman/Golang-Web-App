@@ -34,7 +34,7 @@ body {
 #menu {
   position: fixed;
   right: 20px;
-  top: 5px;
+  top: 15px;
 }
 
 /* Footer Style */
@@ -141,7 +141,8 @@ form {
   gap: 0;
 }
 
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
   width: 200px;
   height: 10px;
   padding: 10px;
@@ -162,8 +163,9 @@ input[type=text], input[type=password] {
     max-width: none;
     box-sizing: content-box;
   }
-  
-  input[type=text], input[type=password] {
+
+  input[type=text],
+  input[type=password] {
     width: 190px;
     height: 10px;
     padding: 10px;
@@ -189,33 +191,30 @@ input[type=text], input[type=password] {
 
 /* Dropdown Button */
 .dropbtn {
-  background-color: #010101;
-  color: white;
+  color: black;
   padding: 8px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-/* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
-  background-color: #50565b;
+  background-color: transparent;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
-  position: relative;
-  display: inline-block;
+  position: fixed;
+  right: 20px;
+  top: 5px;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
+  right: 0;
   display: none;
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -228,7 +227,27 @@ input[type=text], input[type=password] {
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {display:block;}
+.show {
+  display: block;
+}
+
+/* Profile Picture */
+.profile-pic {
+  display: inline-block;
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
