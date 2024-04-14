@@ -94,14 +94,13 @@ func (s *Server) DeleteUser(c *gin.Context) {
 		return
 	}
 
+	c.SetCookie("token", "", -1, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
-	s.Logout(c)
 	fmt.Println("User", user_id, "deleted")
 }
 
 func (s *Server) UpdateAccount(c *gin.Context) {
 	userID := c.Param("user_id")
-	fmt.Println("Updating user", userID)
 
 	var user models.User
 	if err := s.db.Where("id = ?", userID).First(&user).Error; err != nil {
