@@ -1,4 +1,4 @@
-{{template "header.html" }}
+{{ template "header.html" . }}
 <div class="box">
   <h1 class="title">Update Account</h1>
   <form id="update-form">
@@ -40,12 +40,6 @@
 </div>
 
 <script>
-  setMenu([
-    { text: 'Home', url: '/' },
-    { text: 'Dashboard', url: '/user/dashboard' },
-    { text: 'Log Out', url: '/user/logout' }
-  ]);
-
   document.getElementById('update-form').addEventListener('submit', function (event) {
     event.preventDefault();
 

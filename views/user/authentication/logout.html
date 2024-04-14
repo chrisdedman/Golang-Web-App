@@ -1,5 +1,5 @@
 {{define "logout.html"}}
-{{template "header.html"}}
+{{ template "header.html" . }}
 <div class="box">
   <h1 class="title">Log Out</h1>
   <span style='font-size:48px;color:red;'>&#9888;</span>
@@ -8,10 +8,6 @@
   <div id="message"></div>
 </div>
 <script>
-  setMenu([
-    { text: 'Home', url: '/' },
-    { text: 'Dashboard', url: '/user/dashboard' }
-  ]);
   document.getElementById('logoutButton').addEventListener('click', function () {
     fetch('/user/logout', {
       method: 'POST',

@@ -1,4 +1,4 @@
-{{template "header.html" }}
+{{ template "header.html" . }}
 <div class="box">
   <h1 class="title">Delete Account</h1>
   <span style='font-size:48px;color:red;'>&#9888;</span>
@@ -9,11 +9,6 @@
 </div>
 
 <script>
-  setMenu([
-    { text: 'Home', url: '/' },
-    { text: 'Dashboard', url: '/user/dashboard' },
-    { text: 'Log Out', url: '/user/logout' }
-  ]);
   document.getElementById('delete-btn').addEventListener('click', function () {
     fetch('/user/delete/{{.userID}}', {
       method: 'DELETE',

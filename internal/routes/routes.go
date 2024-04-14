@@ -52,7 +52,10 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 	authorized.Use(middleware.AuthMiddleware())
 	{
 		authorized.GET("/dashboard", func(ctx *gin.Context) {
-			ctx.HTML(http.StatusOK, "dashboard.html", gin.H{})
+			user := ctx.MustGet("user").(jwt.MapClaims)
+			ctx.HTML(http.StatusOK, "dashboard.html", gin.H{
+				"user": user["username"],
+			})
 		})
 
 		authorized.GET("/api", func(c *gin.Context) {
@@ -64,24 +67,27 @@ func AuthRoutes(router *gin.Engine, db *gorm.DB) {
 		authorized.PUT("/update/:user_id", server.UpdateAccount)
 		authorized.GET("/update", func(ctx *gin.Context) {
 			user := ctx.MustGet("user").(jwt.MapClaims)
-			userID := user["id"].(float64)
 			ctx.HTML(http.StatusOK, "update.html", gin.H{
-				"userID": userID,
+				"userID": user["id"].(float64),
+				"user":   user["username"],
 			})
 		})
 
 		authorized.DELETE("/delete/:user_id", server.DeleteUser)
 		authorized.GET("/delete", func(ctx *gin.Context) {
 			user := ctx.MustGet("user").(jwt.MapClaims)
-			userID := user["id"].(float64)
 			ctx.HTML(http.StatusOK, "delete.html", gin.H{
-				"userID": userID,
+				"userID": user["id"].(float64),
+				"user":   user["username"],
 			})
 		})
 
 		authorized.POST("/logout", server.Logout)
 		authorized.GET("/logout", func(ctx *gin.Context) {
-			ctx.HTML(http.StatusOK, "logout.html", gin.H{})
+			user := ctx.MustGet("user").(jwt.MapClaims)
+			ctx.HTML(http.StatusOK, "logout.html", gin.H{
+				"user": user["username"],
+			})
 		})
 	}
 }

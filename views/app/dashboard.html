@@ -1,23 +1,9 @@
-{{template "header.html" }}
+{{ template "header.html" . }}
 <h1 class="title">
   Golang Web App Template Dashboard
 </h1>
-<div class="dropdown">
-  <button onclick="settings()" class="dropbtn">Account Settings</button>
-  <div id="setting" class="dropdown-content">
-    <a href='/user/update'>Update Account</a>
-    <a href='/user/delete'>Delete Account</a>
-  </div>
-</div>
 <p>
   This is the main app. This is a protected route. You can only access this page if you are logged in.
 </p>
 
-<script>
-  setMenu([
-    { text: 'Home', url: '/' },
-    { text: 'Dashboard', url: '/user/dashboard' },
-    { text: 'Log Out', url: '/user/logout' }
-  ]);
-</script>
 {{template "footer.html"}}
