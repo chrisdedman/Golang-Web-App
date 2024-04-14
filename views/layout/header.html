@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/assets/style.css">
 	<link rel="shortcut icon" type="image/png" href="/assets/favicon.ico" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 	<script type="text/javascript" src="/assets/menu.js"></script>
 	<title>Golang Web App Template</title>
 </head>
@@ -14,7 +15,22 @@
 <body>
 	<div class="header">
 		<div id="logo"><a href="/"><img src="/assets/header.png" height="80" /></a></div>
-		<div id="menu"></div> <!-- Menu container -->
+		{{if .user}}
+		<div class="dropdown">
+			<img src="/assets/profile.png" alt="Account Picture" height="50" width="50" onclick="settings()" class="dropbtn">
+			<div id="setting" class="dropdown-content">
+				<p style="text-align: center; color: black;"><strong>{{.user}}</strong></p>
+				<hr>
+				<a href='/user/dashboard'><i class="fa fa-dashboard"></i> Dashboard</a>
+				<a href='/user/update'><i class="fa fa-pencil-square-o"></i> Update</a>
+				<a href='/user/delete'><i class="fa fa-trash-o"></i> Delete</a>
+				<hr>
+				<a href='/user/logout'><i class="fa fa-sign-out"></i> Logout</a>
+			</div>
+		</div>
 	</div>
+	{{else}}
+	<div id="menu"></div>
+	{{end}}
 	<div class="container">
 		{{end}}
