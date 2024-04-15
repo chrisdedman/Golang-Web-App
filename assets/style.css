@@ -207,6 +207,13 @@ input[type=password] {
   top: 5px;
 }
 
+/* Style the arrow */
+.dropdown-arrow {
+  color: black;
+  font-size: 12px;
+  align-items: center;
+}
+
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   right: 0;
@@ -214,6 +221,7 @@ input[type=password] {
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
+  max-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
