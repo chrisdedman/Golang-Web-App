@@ -18,20 +18,25 @@
 			<a href="/"><img src="/assets/header.png" height="80" /></a>
 		</div>
 		{{if .user}}
-		<div class="dropdown">
-			<img src="/assets/profile.png" alt="Account Picture" height="50" width="50" onclick="settings()" class="dropbtn">
+		<div class="dropdown" onclick="settings()">
+			<div style="display: flex; align-items: center;">
+				<img src="/assets/profile.png" alt="Account Picture" height="50" width="50" class="dropbtn">
+				<i class="fa fa-caret-down dropdown-arrow"></i>
+			</div>
 			<div id="setting" class="dropdown-content">
-				<p style="text-align: center; color: black;"><strong>{{.user}}</strong></p>
+				<p style="text-align: center; color: black; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+					<strong>{{.user}}</strong></p>
 				<hr>
 				<a href='/user/dashboard'><i class="fa fa-dashboard"></i> Dashboard</a>
+				<hr>
 				<a href='/user/update'><i class="fa fa-pencil-square-o"></i> Update User</a>
 				<a href='/user/delete'><i class="fa fa-trash-o"></i> Delete Account</a>
 				<hr>
 				<a href='/user/logout'><i class="fa fa-sign-out"></i> Logout</a>
 			</div>
 		</div>
+		{{else}}
 	</div>
-	{{else}}
 	<div id="menu"></div>
 	{{end}}
 	<div class="container">
