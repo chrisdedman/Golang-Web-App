@@ -7,10 +7,8 @@
 </p>
 <script>
 	const isAuthenticated = localStorage.getItem('token') !== null;
-	
-	let menuItems = [
-		{ text: 'Home', url: '/' },
-	];
+
+	let menuItems = [];
 
 	if (isAuthenticated) {
 		menuItems.push({ text: 'Dashboard', url: '/user/dashboard' });
