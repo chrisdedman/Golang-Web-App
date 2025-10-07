@@ -1,9 +1,63 @@
 {{ template "header.html" . }}
-<h1 class="title">
-  Golang Web App Template Dashboard
-</h1>
-<p>
-  This is the main app. This is a protected route. You can only access this page if you are logged in.
-</p>
+<h1 class="title" id="dashboard-title">Dashboard</h1>
+<p class="subtitle">Welcome{{if .user}}, <strong>{{.user}}</strong>{{end}}. You are logged in and can manage your
+  account from here.</p>
 
-{{template "footer.html"}}
+<div class="dashboard-grid" aria-labelledby="dashboard-title">
+  <!-- Welcome / Status Card -->
+  <section class="card" role="region" aria-label="Account status">
+    <header class="card-header">
+      <i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+      <h2 class="card-title">Your Account</h2>
+    </header>
+    <div class="card-body">
+      <p>
+        Signed in as {{if .user}}<strong>{{.user}}</strong>{{else}}your account{{end}}.
+      </p>
+      <p class="muted">This is a protected area of the application.</p>
+    </div>
+  </section>
+
+  <!-- Quick Actions Card -->
+  <section class="card" role="region" aria-label="Quick actions">
+    <header class="card-header">
+      <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+      <h2 class="card-title">Quick actions</h2>
+    </header>
+    <div class="card-body actions">
+      <p>
+        <a class="btn" href="/user/update"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Update
+          profile</a>
+      </p>
+      <p>
+        <a class="btn btn-secondary" href="/user/dashboard"><i class="fa-solid fa-dashboard" aria-hidden="true"></i>
+          View
+          dashboard</a>
+      </p>
+      <hr>
+      <p>
+        <a class="btn btn-danger" href="/user/delete"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
+          account</a>
+      </p>
+      <p class="muted small">Deleting your account is permanent.</p>
+      <hr>
+    </div>
+  </section>
+
+  <!-- Helpful Links Card -->
+  <section class="card" role="region" aria-label="Helpful links">
+    <header class="card-header">
+      <i class="fa-solid fa-life-ring" aria-hidden="true"></i>
+      <h2 class="card-title">Helpful links</h2>
+    </header>
+    <div class="card-body">
+      <ul class="list">
+        <li><a href="/">Home</a></li>
+        <li><a href="/user/update">Manage your profile</a></li>
+        <li><a href="https://github.com/chrisdedman/Golang-Web-App" target="_blank" rel="noopener">Source Code</a></li>
+      </ul>
+      <p class="muted small">Looking for something else? Use the navigation above.</p>
+    </div>
+  </section>
+</div>
+{{ template "footer.html" . }}

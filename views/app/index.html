@@ -1,10 +1,36 @@
 {{ template "header.html" . }}
-<h1 class="title">
-	Golang Web App Template
-</h1>
-<p>
-	This is a template for the main app. This is not a protected route. You can access this page without being logged in.
-</p>
+<div class="dashboard-grid" aria-labelledby="dashboard-title">
+	<section class="card" role="region" aria-label="Getting Started">
+		<header class="card-header">
+			<i class="fa-solid fa-rocket" aria-hidden="true"></i>
+			<h2 class="card-title">Getting Started</h2>
+		</header>
+		<div class="card-body">
+			<p>
+				This is a starter template for building your Go web application. Use it as a foundation to create
+				secure,
+				interactive pages with reusable components.
+			</p>
+			<p class="muted">
+				This page is publicly accessible. You do not need to log in to view it.
+			</p>
+		</div>
+	</section>
+
+	<section class="card" role="region" aria-label="Next Steps">
+		<header class="card-header">
+			<i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
+			<h2 class="card-title">Next Steps</h2>
+		</header>
+		<div class="card-body">
+			<ul>
+				<li>Log in to access your dashboard and manage your account.</li>
+				<li>Sign up to create a new account and start using the app.</li>
+				<li>Explore the code and customize components to fit your needs.</li>
+			</ul>
+		</div>
+	</section>
+</div>
 <script>
 	const isAuthenticated = localStorage.getItem('token') !== null;
 
@@ -16,8 +42,6 @@
 		menuItems.push({ text: 'Login', url: '/login' });
 		menuItems.push({ text: 'Sign Up', url: '/signup' });
 	}
-
-	// Set menu items
 	setMenu(menuItems);
 </script>
-{{template "footer.html"}}
+{{ template "footer.html" }}

@@ -5,17 +5,24 @@ function settings() {
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    for (var i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.dropdown .dropbtn');
+  const menu = document.getElementById('setting');
+  if (!btn || !menu) return;
+
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    menu.hidden = expanded;
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menu.hidden && !e.target.closest('.dropdown')) {
+      btn.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
     }
-  }
-}
+  });
+});
 
 /* 
   setmenu() function is used to set menu items dynamically
