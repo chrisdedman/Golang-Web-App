@@ -7,37 +7,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/assets/style.css">
 	<link rel="shortcut icon" type="image/png" href="/assets/favicon.ico" />
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+		integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script type="text/javascript" src="/assets/menu.js"></script>
 	<title>Golang Web App Template</title>
 </head>
 
 <body>
-	<div class="header">
+	<header class="header" role="banner">
 		<div id="logo">
-			<a href="/"><img src="/assets/header.png" height="80" /></a>
+			<a href="/"><img src="/assets/header.png" height="70" alt="App Logo"></a>
 		</div>
+
 		{{if .user}}
-		<div class="dropdown" onclick="settings()">
-			<div style="display: flex; align-items: center;">
-				<img src="/assets/profile.png" alt="Account Picture" height="50" width="50" class="dropbtn">
-				<i class="fa fa-caret-down dropdown-arrow"></i>
+		<div class="dropdown">
+			<button type="button" class="dropbtn" onclick="settings()" aria-haspopup="true" aria-expanded="false">
+				<img src="/assets/profile.png" alt="Profile" height="32" width="32">
+				<i class="fa fa-caret-down dropdown-arrow" aria-hidden="true"></i>
+				<span class="visually-hidden">Open account menu</span>
+			</button>
+			<div id="setting" class="dropdown-content" hidden>
+				<p class="dropdown-username"><strong>{{.user}}</strong></p>
+				<hr>
+				<a href='/user/dashboard'><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+				<hr>
+				<a href='/user/update'><i class="fa-solid fa-pen-to-square"></i> Update User</a>
+				<a href='/user/delete'><i class="fa-solid fa-trash"></i> Delete Account</a>
+				<hr>
+				<a href='/user/logout'><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
 			</div>
-			<div id="setting" class="dropdown-content">
-				<p style="text-align: center; color: black; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-					<strong>{{.user}}</strong></p>
-				<hr>
-				<a href='/user/dashboard'><i class="fa fa-dashboard"></i> Dashboard</a>
-				<hr>
-				<a href='/user/update'><i class="fa fa-pencil-square-o"></i> Update User</a>
-				<a href='/user/delete'><i class="fa fa-trash-o"></i> Delete Account</a>
-				<hr>
-				<a href='/user/logout'><i class="fa fa-sign-out"></i> Logout</a>
-			</div>
+
 		</div>
 		{{else}}
-	</div>
-	<div id="menu"></div>
-	{{end}}
+		<nav id="menu" aria-label="Primary"></nav>
+		{{end}}
+	</header>
 	<div class="container">
 		{{end}}
