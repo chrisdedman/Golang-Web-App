@@ -10,10 +10,14 @@ func Server(host string, db *gorm.DB) {
 	router := gin.Default()
 	router.ForwardedByClientIP = true
 	router.SetTrustedProxies([]string{"localhost"})
-	router.Static("assets", "./assets")
 
+	// Serve static assets (CSS, JS, images, etc.)
+	router.Static("/assets", "./assets")
+
+	// Register all routes
 	routes.AuthRoutes(router, db)
 
+	// Load all templates
 	files := []string{
 		"views/user/authentication/login.html", "views/user/authentication/signup.html",
 		"views/user/authentication/logout.html",
@@ -23,5 +27,7 @@ func Server(host string, db *gorm.DB) {
 	}
 
 	router.LoadHTMLFiles(files...)
+
+	// Start the server
 	router.Run(host)
 }
